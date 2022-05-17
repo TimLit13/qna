@@ -28,6 +28,10 @@ group :development do
   gem 'rack-mini-profiler', '~> 2.0'
   gem 'listen', '~> 3.3'
   gem 'spring'
+  gem 'rubocop', '~> 1.29', require: false
+  gem 'rubocop-rails', '~> 2.14', require: false
+  gem 'rubocop-rspec', '~> 2.10', require: false
+  gem 'rubocop-performance', '~> 1.13', require: false
 end
 
 group :test do
