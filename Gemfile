@@ -40,6 +40,7 @@ group :test do
   gem 'selenium-webdriver'
   gem 'webdrivers'
   gem 'shoulda-matchers', '~> 5.0'
+  gem 'rails-controller-testing'
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
