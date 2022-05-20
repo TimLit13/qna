@@ -1,5 +1,4 @@
 class AnswersController < ApplicationController
-
   before_action :find_question, only: %i[create]
 
   def create
