@@ -13,6 +13,7 @@ gem 'jbuilder', '~> 2.7'
 # gem 'redis', '~> 4.0'
 # gem 'bcrypt', '~> 3.1.7'
 gem 'slim-rails', '~> 3.1', '>= 3.1.1'
+gem 'devise', '~> 4.8', '>= 4.8.1'
 
 # gem 'image_processing', '~> 1.2'
 
@@ -41,6 +42,7 @@ group :test do
   gem 'webdrivers'
   gem 'shoulda-matchers', '~> 5.0'
   gem 'rails-controller-testing'
+  gem 'launchy'
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
