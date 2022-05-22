@@ -19,3 +19,9 @@ Style/FrozenStringLiteralComment:
 
 Style/Documentation:
   Enabled: false
+
+Style/EmptyMethod:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
