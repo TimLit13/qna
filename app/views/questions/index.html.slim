@@ -1,3 +1,6 @@
+- if current_user
+  p= link_to 'Log out', destroy_user_session_path, method: :delete 
+
 h3 List of questions
 
 = render partial: 'question', collection: @questions
