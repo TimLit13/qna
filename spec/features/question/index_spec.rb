@@ -11,14 +11,14 @@ feature 'Anybody can view list of questions' do
 
     scenario 'Can view questions' do
       visit questions_path
-      expect(page).to have_content("MyText", count: 3)
+      expect(page).to have_content('MyText', count: 3)
     end
   end
 
   describe 'Unauthenticated user' do
-    scenario 'can view questions' do
+    scenario 'Can view questions' do
       visit questions_path
-      expect(page).to have_content("MyText", count: 3)
+      expect(page).to have_content('MyText', count: 3)
     end
   end
 end
