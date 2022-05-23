@@ -1,4 +1,14 @@
-h1= @question.title
+h3= @question.title
 p= @question.body
 
-=render template: 'answers/new' if current_user
+hr
+  
+- if @question.answers.any?
+  h3 Answers
+  - @question.answers.each do |answer|
+    p= answer.body
+    hr
+- else
+  p= 'No answers yet'
+
+=render 'answers/new'

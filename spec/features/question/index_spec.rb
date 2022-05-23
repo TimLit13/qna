@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'Anybody can view list of questions' do
   given(:user) { create(:user) }
-  given!(:list_of_questions) { create_list(:question, 3) }
+  given!(:list_of_questions) { create_list(:question, 3, user: user) }
 
   describe 'Authenticated user' do
     background do
