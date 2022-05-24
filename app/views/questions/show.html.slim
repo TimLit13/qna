@@ -1,5 +1,6 @@
 h3= @question.title
 p= @question.body
+=link_to 'Delete', question_path(@question), method: :delete if @question.user == current_user
 
 hr
   

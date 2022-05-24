@@ -12,7 +12,7 @@ feature 'User can delete quetion' do
       click_on 'Delete'
 
       expect(page).to have_content 'Question was successfully deleted'
-      expect(page).to have_not_content question.body
+      expect(page).to_not have_content question.body
     end
     scenario 'Other user can not delete author question' do
       sign_in(user)
@@ -28,5 +28,4 @@ feature 'User can delete quetion' do
       expect(page).to_not have_selector(:link_or_button, 'Delete')
     end 
   end
-
 end
