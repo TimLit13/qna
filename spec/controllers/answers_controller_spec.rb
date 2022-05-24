@@ -9,6 +9,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #create' do
+    before { login(user) }
     context 'with valid attributes' do
       it 'saves a new answer in db' do
         # count = Answer.count
