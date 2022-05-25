@@ -1,6 +1,6 @@
 h3= @question.title
 p= @question.body
--if current_user.present? && current_user.author_of?(@question)
+-if current_user&.author_of?(@question)
   =link_to 'Delete question', question_path(@question), method: :delete
 
 hr
@@ -10,7 +10,7 @@ hr
   - @question.answers.each do |answer|
     -if answer.persisted?
       p= answer.body
-      -if current_user.present? && current_user.author_of?(answer)
+      -if current_user&.author_of?(answer)
         =link_to 'Delete answer', answer_path(answer), method: :delete
       hr
 - else
