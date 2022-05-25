@@ -7,9 +7,11 @@ hr
 - if @question.answers.any?
   h3 Answers
   - @question.answers.each do |answer|
-    p= answer.body
-    =link_to 'Delete answer', answer_path(answer), method: :delete if current_user.present? && current_user == answer.user
-    hr
+    -if answer.persisted?
+      p= answer.body
+      -if current_user.present? && current_user == answer.user
+        =link_to 'Delete answer', answer_path(answer), method: :delete
+      hr
 - else
   p= 'No answers yet'
 
