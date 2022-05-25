@@ -9,7 +9,7 @@ feature 'User can delete quetion' do
     scenario 'Author can delete his question' do
       sign_in(question_author)
       visit question_path(question)
-      click_on 'Delete'
+      click_on 'Delete question'
 
       expect(page).to have_content 'Question was successfully deleted'
       expect(page).to_not have_content question.body
@@ -18,14 +18,14 @@ feature 'User can delete quetion' do
       sign_in(user)
       visit question_path(question)
 
-      expect(page).to_not have_selector(:link_or_button, 'Delete')
+      expect(page).to_not have_selector(:link_or_button, 'Delete question')
     end
   end
 
   describe 'Unuthenticated user' do
     scenario 'User can not delete question' do
       visit question_path(question)
-      expect(page).to_not have_selector(:link_or_button, 'Delete')
-    end 
+      expect(page).to_not have_selector(:link_or_button, 'Delete question')
+    end
   end
 end

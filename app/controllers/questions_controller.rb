@@ -1,5 +1,5 @@
 class QuestionsController < ApplicationController
-  before_action :authenticate_user!, except: %i[index show destroy]
+  before_action :authenticate_user!, except: %i[index show]
   before_action :load_question, only: %i[show edit update destroy]
 
   def index
@@ -36,10 +36,11 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if @question.destroy
+    if @question.user == current_user
+      @question.destroy
       redirect_to questions_path, notice: 'Question was successfully deleted'
     else
-      render :show
+      redirect_to question_path(@question), notice: 'Question was not deleted'
     end
   end
 

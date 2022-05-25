@@ -1,6 +1,6 @@
 h3= @question.title
 p= @question.body
-=link_to 'Delete', question_path(@question), method: :delete if @question.user == current_user
+=link_to 'Delete question', question_path(@question), method: :delete if current_user.present? && current_user == @question.user
 
 hr
   
@@ -8,6 +8,7 @@ hr
   h3 Answers
   - @question.answers.each do |answer|
     p= answer.body
+    =link_to 'Delete answer', answer_path(answer), method: :delete if current_user.present? && current_user == answer.user
     hr
 - else
   p= 'No answers yet'

@@ -5,8 +5,7 @@ feature 'User can create answer', '
   User would like to be able to create the answer
 ' do
   given(:user) { create(:user) }
-  given(:question) { create(:question, user: user) }
-  given!(:answers) { create_list(:answer, 3, question: question, user: user) }
+  given!(:question) { create(:question, user: user) }
 
   describe 'Authenticated user' do
     background do
