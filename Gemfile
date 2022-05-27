@@ -15,6 +15,8 @@ gem 'jbuilder', '~> 2.7'
 gem 'slim-rails', '~> 3.1', '>= 3.1.1'
 gem 'devise', '~> 4.8', '>= 4.8.1'
 
+gem 'jquery-rails', '~> 4.4'
+
 # gem 'image_processing', '~> 1.2'
 
 gem 'bootsnap', '>= 1.4.4', require: false

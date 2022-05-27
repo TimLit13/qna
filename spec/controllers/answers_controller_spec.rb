@@ -9,40 +9,40 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #create' do
-    context 'Authenticated user' do  
+    context 'Authenticated user' do
       before { login(user) }
       context 'with valid attributes' do
         it 'saves a new answer in db' do
           # count = Answer.count
 
           expect do
-            post :create, params: params
+            post :create, params: params, format: :js
           end.to change(Answer, :count).by(1)
         end
 
         it 'redirect to show view' do
-          post :create, params: params
+          post :create, params: params, format: :js
 
-          expect(response).to redirect_to assigns(:question)
+          expect(response).to render_template :create
         end
       end
 
       context 'with invalid attributes' do
         it 'does not save the answer' do
           expect do
-            post :create, params: params.update(answer: { body: nil })
+            post :create, params: params.update(answer: { body: nil }), format: :js
           end.to_not change(Answer, :count)
         end
 
         it 're-renders new view' do
-          post :create, params: params.update(answer: { body: nil })
-          expect(response).to render_template 'questions/show'
+          post :create, params: params.update(answer: { body: nil }), format: :js
+          expect(response).to render_template :create
         end
       end
     end
 
     context 'Unauthenticated user' do
-      context 'with valid attributes' do  
+      context 'with valid attributes' do
         it 'not saves a new answer in db' do
           expect do
             post :create, params: params
@@ -52,7 +52,7 @@ RSpec.describe AnswersController, type: :controller do
         it 'redirect to login page' do
           post :create, params: params
 
-          expect(response).to  redirect_to new_user_session_path
+          expect(response).to redirect_to new_user_session_path
         end
       end
     end
@@ -73,7 +73,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'DELETE #destroy' do
     let(:question) { create(:question, user: user) }
     let!(:answer) { create(:answer, question: question, user: user) }
-    context 'Authenticated user' do  
+    context 'Authenticated user' do
       before { login(user) }
       it 'deletes answer' do
         expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
