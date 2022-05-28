@@ -94,4 +94,32 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #update' do
+    let!(:answer) { create(:answer, question: question, user: user) }
+
+    context 'Authenticated user' do
+      before { login(user) }
+      context 'With valid attributes' do
+        it 'changes answer attributes' do
+          patch :update, params: { id: answer, answer: { body: 'Edited answer' } }, format: :js
+          answer.reload
+          expect(answer.body).to eq('Edited answer')
+        end
+
+        it 'renders update view' do
+          patch :update, params: { id: answer, answer: { body: 'Edited answer' } }, format: :js
+          expect(response).to render_template :update
+        end
+      end
+
+      context 'With invalid attributes' do
+        it 'not changes answer attributes' do
+          expect do
+            patch :update, params: { id: answer, answer: { body: nil } }, format: :js
+          end.to_not change(answer, :body)
+        end
+      end
+    end
+  end
 end
