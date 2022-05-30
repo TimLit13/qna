@@ -24,7 +24,9 @@ feature 'User can edit his answer', '
         expect(page).to_not have_selector('textarea')
       end
     end
+
     scenario 'Edits his answer with errors'
+    
     scenario 'Tries to edit other user answer', js: true do
       sign_in(user)
       visit question_path(question)
