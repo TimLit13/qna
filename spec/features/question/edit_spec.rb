@@ -1,52 +1,48 @@
 require 'rails_helper'
 
-feature 'User can edit his answer', '
+feature 'User can edit his question', '
   In order to correct mistakes
-  User would like to be able to edit his answer
+  User would like to be able to edit his question
 ' do
   given(:user) { create(:user) }
-  given(:answer_author) { create(:user) }
-  given(:new_user) { create(:user) }
-  given(:question) { create(:question, user: user) }
-  given!(:answer) { create(:answer, user: answer_author, question: question) }
+  given(:question_author) { create(:user) }
+  given!(:question) { create(:question, user: question_author) }
 
   describe 'Authenticated user' do
-    scenario 'Edits his answer', js: true do
-      sign_in(answer_author)
+    scenario 'Edits his question', js: true do
+      sign_in(question_author)
       visit question_path(question)
       click_on 'Edit'
 
-      within '.answers' do
-        fill_in 'Body', with: 'Edited answer'
+      within '.question' do
+        fill_in 'Body', with: 'Edited question'
         click_on 'Save'
 
-        expect(page).to_not have_content answer.body
-        expect(page).to have_content 'Edited answer'
+        expect(page).to_not have_content question.body
+        expect(page).to have_content 'Edited question'
         expect(page).to_not have_selector('textarea')
       end
     end
 
     scenario 'Edits his answer with errors', js: true do
-      sign_in(answer_author)
+      sign_in(question_author)
       visit question_path(question)
 
       click_on 'Edit'
 
-      within '.answers' do
+      within '.question' do
         fill_in 'Body', with: nil
         click_on 'Save'
 
-        expect(page).to have_content answer.body
+        expect(page).to have_content question.body
         expect(page).to have_content 'error'
         expect(page).to have_selector('textarea')
       end
     end
 
     scenario 'Tries to edit other user answer', js: true do
-      sign_in(new_user)
+      sign_in(user)
       visit question_path(question)
-
-      # save_and_open_page
 
       expect(page).to_not have_selector(:link_or_button, 'Edit')
     end
