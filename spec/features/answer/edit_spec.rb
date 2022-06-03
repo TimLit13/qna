@@ -25,8 +25,22 @@ feature 'User can edit his answer', '
       end
     end
 
-    scenario 'Edits his answer with errors'
-    
+    scenario 'Edits his answer with errors', js: true do
+      sign_in(answer_author)
+      visit question_path(question)
+
+      click_on 'Edit'
+
+      within '.answers' do
+        fill_in 'Body', with: nil
+        click_on 'Save'
+
+        expect(page).to have_content answer.body
+        expect(page).to have_content 'error'
+        expect(page).to have_selector('textarea')
+      end
+    end
+
     scenario 'Tries to edit other user answer', js: true do
       sign_in(user)
       visit question_path(question)
