@@ -7,16 +7,16 @@ feature 'User can delete answer' do
   given!(:answer) { create(:answer, user: answer_author, question: question) }
 
   describe 'Authenticated user' do
-    scenario 'Author can delete his answer' do
+    scenario 'Author can delete his answer', js: true do
       sign_in(answer_author)
       visit question_path(question)
-      click_on 'Delete answer'
+      accept_alert { click_on 'Delete answer' }
 
       expect(page).to have_content 'Answer was successfully deleted.'
       expect(page).to_not have_content answer.body
     end
 
-    scenario 'Other user can not delete authors answer' do
+    scenario 'Other user can not delete authors answer', js: true do
       sign_in(user)
       visit question_path(question)
 
@@ -25,7 +25,7 @@ feature 'User can delete answer' do
   end
 
   describe 'Unuthenticated user' do
-    scenario 'User can not delete answer' do
+    scenario 'User can not delete answer', js: true do
       visit question_path(question)
       expect(page).to_not have_selector(:link_or_button, 'Delete answer')
     end
