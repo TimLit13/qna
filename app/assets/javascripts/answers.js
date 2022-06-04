@@ -4,5 +4,9 @@ $(document).on('turbolinks:load', function(){
     $(this).hide();
     let answerId = $(this).data('answerId');
     $('form#edit-answer-' + answerId).removeClass('hidden');
-  })
+  });
+
+  $('.answers').on('click', '.mark-best-answer-link', function(e){
+    let answerId = $(this).data('answerId');
+  });
 });

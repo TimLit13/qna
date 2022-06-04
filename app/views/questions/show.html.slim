@@ -4,7 +4,12 @@
 .answers
   - if @question.answers.any?
     h3 Answers
-    = render @question.answers
+    .best-answer
+      - if @best_answe
+        = render @best_answer
+    .other-answers
+      - if @other_answers
+        = render @other_answers
   - else
     p= 'No answers yet'
 

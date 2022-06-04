@@ -3,6 +3,10 @@
     = render 'shared/errors', resource: answer
 
   p= answer.body
+  - if current_user&.author_of?(answer.question) && answer.question.best_answer_id != answer.id
+    = link_to 'Mark as best answer', mark_answer_as_best_answer_path(answer), method: :patch, remote: true, class: 'mark-answer-as-best-link'
+    p
+
   -if current_user&.author_of?(answer)
     =link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
     = ' | '
