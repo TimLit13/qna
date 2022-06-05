@@ -4,6 +4,11 @@
 -else
   h3= question.title
   p= question.body
+
+  -if question.files.attached?
+    - question.files.each do |file|
+      p= link_to file.filename.to_s, url_for(file)
+
   . class="question-errors-#{question.id}"
   = render 'shared/errors', resource: question
   -if current_user&.author_of?(question)
