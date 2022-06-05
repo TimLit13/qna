@@ -1,19 +1,16 @@
-h3= @question.title
-p= @question.body
--if current_user&.author_of?(@question)
-  =link_to 'Delete question', question_path(@question), method: :delete
+.question
+  = render @question
 
-hr
-  
-- if @question.answers.any?
-  h3 Answers
-  - @question.answers.each do |answer|
-    -if answer.persisted?
-      p= answer.body
-      -if current_user&.author_of?(answer)
-        =link_to 'Delete answer', answer_path(answer), method: :delete
-      hr
-- else
-  p= 'No answers yet'
+.answers
+  - if @question.answers.any?
+    h3 Answers
+    .best-answer
+      - if @best_answe
+        = render @best_answer
+    .other-answers
+      - if @other_answers
+        = render @other_answers
+  - else
+    p= 'No answers yet'
 
 =render 'answers/new'

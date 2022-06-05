@@ -1,3 +1,22 @@
-br
-h5= question.title
-p= question.body
+-if current_page?(root_path) || current_page?(questions_path)
+  p= link_to question.title, question
+  p= question.body
+-else
+  h3= question.title
+  p= question.body
+  . class="question-errors-#{question.id}"
+  = render 'shared/errors', resource: question
+  -if current_user&.author_of?(question)
+    =link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
+    = ' | '
+    =link_to 'Delete question', question_path(question), method: :delete
+
+    = form_with model: question, class: 'hidden', id: "edit-question-#{question.id}", local: false do |f|
+      p
+        = f.label :title
+        = f.text_area :title
+      p
+        = f.label :body
+        = f.text_area :body
+      
+      = f.submit 'Save'

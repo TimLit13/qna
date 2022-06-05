@@ -1,0 +1,19 @@
+. class="answer-id-#{answer.id}"
+  . class="answer-errors-#{answer.id}"
+    = render 'shared/errors', resource: answer
+
+  p= answer.body
+  - if current_user&.author_of?(answer.question) && answer.question.best_answer_id != answer.id
+    = link_to 'Mark as best answer', mark_answer_as_best_answer_path(answer), method: :patch, remote: true, class: 'mark-answer-as-best-link'
+    p
+
+  -if current_user&.author_of?(answer)
+    =link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+    = ' | '
+    =link_to 'Delete answer', answer_path(answer), remote: true, method: :delete, data: { confirm: 'Are you sure' }
+
+    = form_with model: answer, class: 'hidden', id: "edit-answer-#{answer.id}", local: false do |f|
+      = f.label :body
+      = f.text_area :body
+      = f.submit 'Save'
+  hr

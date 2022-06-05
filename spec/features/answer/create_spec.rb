@@ -17,7 +17,7 @@ feature 'User can create answer', '
       expect(page).to have_selector(:link_or_button, 'Create answer')
     end
 
-    scenario 'Can create an answer' do
+    scenario 'Can create an answer', js: true do
       fill_in 'Body', with: 'Answer text'
       click_on 'Create answer'
 
@@ -25,7 +25,7 @@ feature 'User can create answer', '
       expect(page).to have_content 'Answer text'
     end
 
-    scenario 'Create an answer with errors' do
+    scenario 'Create an answer with errors', js: true do
       click_on 'Create answer'
       expect(page).to have_content "can't be blank"
     end
