@@ -51,7 +51,6 @@ feature 'User can edit his answer', '
       expect(page).to_not have_selector(:link_or_button, 'Edit')
     end
 
-
     scenario 'Attach files', js: true do
       sign_in(answer_author)
       visit question_path(question)

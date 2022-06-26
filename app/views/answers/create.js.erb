@@ -3,5 +3,5 @@ $('.answer-errors').html('<%= render 'shared/errors', resource: @answer %>');
 <% if @answer.persisted? %>
   $('.other-answers').append('<%= j render @answer %>');
   $('.new-answer #answer_body').val('');
-  $('.notice').append('Your answer successfully created!');
+  $('.notice').text('').append('Your answer successfully created!');
 <% end %>
