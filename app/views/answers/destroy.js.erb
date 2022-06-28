@@ -1,4 +1,4 @@
 $('.answer-id-<%= @answer.id %>').remove();
 <% if @answer.destroyed? %>
-	$('.notice').append('Answer was successfully deleted.');
+	$('.notice').text('').append('Answer was successfully deleted.');
 <% end %>

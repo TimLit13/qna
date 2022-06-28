@@ -16,6 +16,7 @@ gem 'slim-rails', '~> 3.1', '>= 3.1.1'
 gem 'devise', '~> 4.8', '>= 4.8.1'
 
 gem 'jquery-rails', '~> 4.4'
+gem "aws-sdk-s3"
 
 # gem 'image_processing', '~> 1.2'
 
@@ -25,6 +26,8 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 5.1', '>= 5.1.2'
   gem 'factory_bot_rails'
+
+  gem 'dotenv-rails'
 end
 
 group :development do

@@ -1,0 +1,4 @@
+$('.attachment-<%= @attachment.id %>').remove();
+<% if @attachment.destroyed? %>
+  $('.notice').text('').append('attachment was successfully deleted.');
+<% end %>

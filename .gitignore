@@ -26,3 +26,5 @@ yarn-debug.log*
 .yarn-integrity
 
 google-chrome-stable_current_amd64.deb
+
+.env

@@ -3,6 +3,14 @@
     = render 'shared/errors', resource: answer
 
   p= answer.body
+
+  -if current_user&.author_of?(answer)
+    -if answer.files.attached?
+      - answer.files.each do |file|
+        . class="attachment-#{file.id}"
+          p= link_to file.filename.to_s, url_for(file)
+          = link_to 'Del', attachment_path(file), method: :delete, data: { confirm: 'Are you sure?' }, local: false, remote: true
+
   - if current_user&.author_of?(answer.question) && answer.question.best_answer_id != answer.id
     = link_to 'Mark as best answer', mark_answer_as_best_answer_path(answer), method: :patch, remote: true, class: 'mark-answer-as-best-link'
     p
@@ -13,7 +21,13 @@
     =link_to 'Delete answer', answer_path(answer), remote: true, method: :delete, data: { confirm: 'Are you sure' }
 
     = form_with model: answer, class: 'hidden', id: "edit-answer-#{answer.id}", local: false do |f|
-      = f.label :body
-      = f.text_area :body
-      = f.submit 'Save'
+      p
+        = f.label :body
+        = f.text_area :body
+      p
+        = f.label :files
+        = f.file_field :files, multiple: true, direct_upload: true
+      p
+        = f.submit 'Save'
   hr
+  
