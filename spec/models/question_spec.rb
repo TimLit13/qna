@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Question, type: :model do
   describe 'associations' do
     it { should have_many(:answers).dependent(:destroy) }
+    it { should have_many(:links).dependent(:destroy) }
     it { should belong_to(:best_answer).class_name('Answer').optional }
     it { should belong_to(:user) }
   end
@@ -16,5 +17,9 @@ RSpec.describe Question, type: :model do
     it 'have many attached file' do
       expect(Question.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
     end
+  end
+
+  describe 'nested attributes' do
+    it { should accept_nested_attributes_for :links }
   end
 end

@@ -11,6 +11,11 @@
         . class="attachment-#{file.id}"
           p= link_to file.filename.to_s, url_for(file)
           = link_to 'Del', attachment_path(file), method: :delete, data: { confirm: 'Are you sure?' }, local: false, remote: true
+  .links
+    p Links:
+    ul 
+      - question.links.each do |link|
+        li= link_to link.name, link.url
 
   . class="question-errors-#{question.id}"
   = render 'shared/errors', resource: question
