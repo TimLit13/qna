@@ -10,6 +10,11 @@
         . class="attachment-#{file.id}"
           p= link_to file.filename.to_s, url_for(file)
           = link_to 'Del', attachment_path(file), method: :delete, data: { confirm: 'Are you sure?' }, local: false, remote: true
+  .answer-links
+    p Links:
+    ul 
+      - answer.links.each do |link|
+        li= link_to link.name, link.url
 
   - if current_user&.author_of?(answer.question) && answer.question.best_answer_id != answer.id
     = link_to 'Mark as best answer', mark_answer_as_best_answer_path(answer), method: :patch, remote: true, class: 'mark-answer-as-best-link'
