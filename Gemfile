@@ -17,6 +17,7 @@ gem 'devise', '~> 4.8', '>= 4.8.1'
 
 gem 'jquery-rails', '~> 4.4'
 gem "aws-sdk-s3"
+gem 'cocoon', '~> 1.2', '>= 1.2.9'
 
 # gem 'image_processing', '~> 1.2'
 
