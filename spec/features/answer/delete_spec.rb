@@ -7,6 +7,8 @@ feature 'User can delete answer' do
   given(:question) { create(:question, user: user) }
   given!(:answer_with_files) { create(:answer, :with_files, user: answer_author, question: question) }
   given(:first_attached_file_name) { answer_with_files.files.first.filename.to_s }
+  given!(:link_google) { create(:link, :google, linkable: answer_with_files) }
+
 
   describe 'Authenticated user' do
     describe 'Author of answer' do
@@ -29,6 +31,14 @@ feature 'User can delete answer' do
           expect(page).to_not have_content first_attached_file_name
         end
       end
+
+      scenario 'can delete his link', js: true do
+        within('.answers') do
+          accept_alert { click_on 'Delete link' }
+
+          expect(page).to_not have_selector(:link_or_button, 'Delete link')
+        end
+      end
     end
 
     describe 'Not author of answer' do
@@ -44,18 +54,28 @@ feature 'User can delete answer' do
       scenario 'can not delete authors attachment', js: true do
         expect(page).to_not have_selector(:link_or_button, 'Del')
       end
+
+      scenario 'can not delete authors link', js: true do
+        expect(page).to_not have_selector(:link_or_button, 'Delete link')
+      end
     end
   end
 
   describe 'Unauthenticated user' do
-    scenario 'can not delete answer', js: true do
+    background do
       visit question_path(question)
+    end
+
+    scenario 'can not delete answer', js: true do
       expect(page).to_not have_selector(:link_or_button, 'Delete answer')
     end
 
     scenario 'can not delete attachment', js: true do
-      visit question_path(question)
       expect(page).to_not have_selector(:link_or_button, 'Del')
+    end
+
+    scenario 'can not delete link', js: true do
+      expect(page).to_not have_selector(:link_or_button, 'Delete link')
     end
   end
 end
