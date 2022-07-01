@@ -15,7 +15,9 @@
     p Links:
     ul 
       - question.links.each do |link|
-        li= link_to link.name, link.url
+        . class="link-#{link.id}"  
+          li= link_to link.name, link.url, class: "link-#{link.id}"
+          = link_to 'Delete link', link_path(link), method: :delete, data: { confirm: 'Are you sure?' }, local: false, remote: true
 
   . class="question-errors-#{question.id}"
   = render 'shared/errors', resource: question

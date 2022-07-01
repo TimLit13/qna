@@ -14,7 +14,9 @@
     p Links:
     ul 
       - answer.links.each do |link|
-        li= link_to link.name, link.url
+        . class="link-#{link.id}"  
+          li= link_to link.name, link.url
+          = link_to 'Delete link', link_path(link), method: :delete, data: { confirm: 'Are you sure?' }, local: false, remote: true
 
   - if current_user&.author_of?(answer.question) && answer.question.best_answer_id != answer.id
     = link_to 'Mark as best answer', mark_answer_as_best_answer_path(answer), method: :patch, remote: true, class: 'mark-answer-as-best-link'

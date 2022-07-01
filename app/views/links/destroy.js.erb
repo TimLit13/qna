@@ -1,0 +1,4 @@
+$('.link-<%= @link.id %>').remove();
+<% if @link.destroyed? %>
+  $('.notice').text('').append('link was successfully deleted.');
+<% end %>
