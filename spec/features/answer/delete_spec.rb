@@ -9,7 +9,6 @@ feature 'User can delete answer' do
   given(:first_attached_file_name) { answer_with_files.files.first.filename.to_s }
   given!(:link_google) { create(:link, :google, linkable: answer_with_files) }
 
-
   describe 'Authenticated user' do
     describe 'Author of answer' do
       background do
