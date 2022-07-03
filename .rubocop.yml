@@ -29,4 +29,7 @@ Metrics/BlockLength:
   Enabled: false
 
 Layout/EndOfLine:
-   Enabled: False
+  Enabled: False
+
+Style/RedundantSelf:
+  Enabled: False
