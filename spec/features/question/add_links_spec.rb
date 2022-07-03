@@ -35,8 +35,10 @@ feature 'User can add link to question', '
     sign_in(user)
     visit new_question_path
 
-    fill_in 'Title', with: 'Test question'
-    fill_in 'Body', with: 'text text text'
+    within '.new-question' do
+      fill_in 'Title', with: 'Test question'
+      fill_in 'Body', with: 'text text text'
+    end
 
     fill_in 'Name', with: link_google[:name]
     fill_in 'Url', with: link_google[:url]
@@ -52,8 +54,10 @@ feature 'User can add link to question', '
     sign_in(user)
     visit new_question_path
 
-    fill_in 'Title', with: 'Test question'
-    fill_in 'Body', with: 'text text text'
+    within '.new-question' do
+      fill_in 'Title', with: 'Test question'
+      fill_in 'Body', with: 'text text text'
+    end
 
     fill_in 'Name', with: link_google[:name]
     fill_in 'Url', with: link_google[:url]
