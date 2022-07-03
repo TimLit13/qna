@@ -1,0 +1,16 @@
+h3 List of awards:
+
+-if current_user.awards.any?
+  .awards
+    table
+      thead
+      	tr
+          th Award question
+          th Award title
+          th Award
+      tbody
+        = render @awards
+-else
+  p No awards yet
+
+p= link_to 'Back to questions', questions_path
