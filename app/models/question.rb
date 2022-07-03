@@ -15,5 +15,6 @@ class Question < ApplicationRecord
   def mark_best_answer(answer)
     # self.update(best_answer_id: answer.id)
     update(best_answer_id: answer.id)
+    self.award.update(user: answer.user) if award.present?
   end
 end
