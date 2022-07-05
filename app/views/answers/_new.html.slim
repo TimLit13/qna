@@ -8,5 +8,11 @@
   p
     = f.label :files
     = f.file_field :files, multiple: true, direct_upload: true
-  p
-    = f.submit 'Create answer'
+  
+  p Links:
+  #links
+    = f.fields_for :links do |link|
+      = render partial: 'shared/link_fields', locals: { f: link }
+    .links
+      = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
+  = f.submit 'Create answer'

@@ -9,6 +9,7 @@ feature 'User can edit his answer', '
   given(:new_user) { create(:user) }
   given(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, user: answer_author, question: question) }
+  given(:link_google) { create(:link, :google, linkable: question) }
 
   describe 'Authenticated user' do
     scenario 'Edits his answer', js: true do
@@ -63,6 +64,24 @@ feature 'User can edit his answer', '
 
         expect(page).to have_link 'rails_helper.rb'
         expect(page).to have_link 'spec_helper.rb'
+      end
+    end
+
+    scenario 'add link', js: true do
+      sign_in(answer_author)
+      visit question_path(question)
+
+      click_on 'Edit'
+
+      within '.answers' do
+        click_on 'add link'
+
+        fill_in 'Name', with: link_google.name
+        fill_in 'Url', with: link_google.url
+
+        click_on 'Save'
+
+        expect(page).to have_link link_google.name, href: link_google.url
       end
     end
   end

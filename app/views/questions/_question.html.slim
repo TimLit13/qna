@@ -11,6 +11,21 @@
         . class="attachment-#{file.id}"
           p= link_to file.filename.to_s, url_for(file)
           = link_to 'Del', attachment_path(file), method: :delete, data: { confirm: 'Are you sure?' }, local: false, remote: true
+  - if question.links.any?
+    .question-links
+      p Links:
+      ul 
+        - question.links.each do |link|
+          . class="link-#{link.id}"
+            - if link.gist?
+              / .gist
+              /   .script
+              /     script src="#{link.url}.js"
+              = link_to link.name, link.url, class: 'gist', data: { 'gist-id' => link.gist_id }
+            - else
+              li= link_to link.name, link.url
+            - if current_user&.author_of?(link.linkable)
+              = link_to 'Delete link', link_path(link), method: :delete, data: { confirm: 'Are you sure?' }, local: false, remote: true
 
   . class="question-errors-#{question.id}"
   = render 'shared/errors', resource: question
@@ -29,5 +44,12 @@
       p
         = f.label :files
         = f.file_field :files, multiple: true, direct_upload: true
+
+      p Links:
+      .new-question-links
+        #links
+          = f.fields_for :links do |link|
+          .links
+            = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
       
       = f.submit 'Save'
