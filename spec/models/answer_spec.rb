@@ -20,4 +20,8 @@ RSpec.describe Answer, type: :model do
   describe 'nested attributes' do
     it { should accept_nested_attributes_for :links }
   end
+
+  describe 'shared examples' do
+    # it_behaves_like 'votable'
+  end
 end
