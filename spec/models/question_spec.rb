@@ -25,6 +25,9 @@ RSpec.describe Question, type: :model do
   end
 
   describe 'shared examples' do
-    it_behaves_like 'votable'
+    it_behaves_like 'votable' do
+      let(:user) { create(:user) }
+      let!(:resource) { create(:question, user: user) }
+    end
   end
 end

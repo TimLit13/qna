@@ -6,11 +6,8 @@ shared_examples_for 'votable' do
   end
 
   context 'public methods' do
-    let(:model) { described_class.to_s.underscore.to_sym }
-    let(:user) { create(:user) }
     let(:second_user) { create(:user) }
-    let!(:resource) { create(model, user: user) }
-
+    
     context 'not rated yet' do
       it '#rate_up' do
         resource.rate_up(user)
