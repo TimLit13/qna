@@ -3,6 +3,8 @@
     = render 'shared/errors', resource: answer
 
   p= answer.body
+  
+  = render 'shared/vote', resource: answer
 
   - if current_user&.author_of?(answer)
     - if answer.files.attached?

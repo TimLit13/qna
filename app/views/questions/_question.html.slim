@@ -4,7 +4,9 @@
 -else
   h3= question.title
   p= question.body
-
+  
+  = render 'shared/vote', resource: question
+  
   -if current_user&.author_of?(question)
     -if question.files.attached?
       - question.files.each do |file|

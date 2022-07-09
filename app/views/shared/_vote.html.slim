@@ -1,0 +1,25 @@
+. class="rating" id="#{resource.class.name.downcase.pluralize}-id-#{resource.id}-rating"
+  .rating-value
+    = resource.total_rating
+
+  - unless !user_signed_in? || current_user&.author_of?(resource)
+    . class="rate-up #{'hidden' if resource.rated_before?(current_user)}"
+      = link_to 'Rate up', polymorphic_path(resource, action: :rate_up),
+                           data: { type: :json },
+                           method: :put,
+                           local: false,
+                           remote: true
+
+    . class="rate-down #{'hidden' if resource.rated_before?(current_user)}"
+      = link_to 'Rate down', polymorphic_path(resource, action: :rate_down),
+                             data: { type: :json },
+                             method: :put,
+                             local: false,
+                             remote: true
+
+    . class="cancel-rate #{'hidden' unless resource.rated_before?(current_user)}"
+      = link_to 'Cancel rate', polymorphic_path(resource, action: :cancel_rate),
+                             data: { type: :json },
+                             method: :delete,
+                             local: false,
+                             remote: true
