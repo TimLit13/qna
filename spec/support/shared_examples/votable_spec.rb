@@ -7,7 +7,7 @@ shared_examples_for 'votable' do
 
   context 'public methods' do
     let(:second_user) { create(:user) }
-    
+
     context 'not rated yet' do
       it '#rate_up' do
         resource.rate_up(user)
