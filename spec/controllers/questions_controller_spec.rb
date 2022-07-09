@@ -136,4 +136,12 @@ RSpec.describe QuestionsController, type: :controller do
       expect(response).to redirect_to questions_path
     end
   end
+
+  describe 'shared examples' do
+    it_behaves_like 'voted' do
+      let(:author) { create(:user) }
+      let(:user) { create(:user) }
+      let!(:resource) { create(:question, user: author) }
+    end
+  end
 end
