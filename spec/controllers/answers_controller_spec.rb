@@ -164,4 +164,13 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'shared examples' do
+    it_behaves_like 'voted' do
+      let(:author) { create(:user) }
+      let(:user) { create(:user) }
+      let(:question) { create(:question, user: author) }
+      let(:resource) { create(:answer, user: author, question: question) }
+    end
+  end
 end
