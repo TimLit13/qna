@@ -51,4 +51,35 @@ feature 'User can create answer', '
       expect(page).to have_content 'You need to sign in or sign up before continuing.'
     end
   end
+
+  describe 'multisessions' do
+    given(:first_user) { create(:user) }
+    given(:second_user) { create(:user) }
+    given(:question) { create(:question, user: first_user)}
+
+    scenario 'create answer and second_user can see answer in real time', js: true do
+      Capybara.using_session('second_user') do
+        sign_in(second_user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('first_user') do
+        sign_in(first_user)
+        visit question_path(question)
+
+        within '.new-answer' do
+          fill_in 'Body', with: 'New comet answer'
+        end
+
+        click_on 'Create answer'
+      end
+
+      Capybara.using_session('second_user') do
+        within '.other-answers' do
+          expect(page).to have_content 'New comet answer'
+        end
+      end
+    end
+  end
+  
 end
