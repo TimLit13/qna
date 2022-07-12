@@ -5,6 +5,7 @@
 //= require action_cable
 //= require cocoon
 //= require gh3
+//= require_tree ./channels
 //= require_tree .
 
-let cable = ActionCable.createConsumer();
+let consumer = ActionCable.createConsumer(); 
