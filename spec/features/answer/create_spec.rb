@@ -55,7 +55,7 @@ feature 'User can create answer', '
   describe 'multisessions' do
     given(:first_user) { create(:user) }
     given(:second_user) { create(:user) }
-    given(:question) { create(:question, user: first_user)}
+    given(:question) { create(:question, user: first_user) }
 
     scenario 'create answer and second_user can see answer in real time', js: true do
       Capybara.using_session('second_user') do
@@ -81,5 +81,4 @@ feature 'User can create answer', '
       end
     end
   end
-  
 end

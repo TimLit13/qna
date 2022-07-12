@@ -8,6 +8,6 @@ class QuestionsChannel < ApplicationCable::Channel
   end
 
   def follow
-    stream_from "questions"
+    stream_from 'questions'
   end
 end
