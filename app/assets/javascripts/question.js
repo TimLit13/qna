@@ -6,3 +6,16 @@ $(document).on('turbolinks:load', function(){
     $('form#edit-question-' + questionId).removeClass('hidden');
   })
 });
+
+$(document).on('turbolinks:load', function(){
+  cable.subscriptions.create('QuestionsChannel', {
+    connected() {
+    console.log('Client connected')
+    this.perform('follow')
+  },
+  received(content) {
+      console.log(content)
+      $('.questions-list').append(content)
+    }
+  });
+})
