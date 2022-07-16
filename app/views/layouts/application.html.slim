@@ -9,6 +9,7 @@ html
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
     
     = action_cable_meta_tag
+    = Gon::Base.render_data
     
   body
     div

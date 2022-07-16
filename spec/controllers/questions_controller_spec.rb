@@ -80,6 +80,13 @@ RSpec.describe QuestionsController, type: :controller do
 
         expect(response).to redirect_to assigns(:question)
       end
+
+      it 'broadcast new question' do
+        login(user)
+        expect do
+          post :create, params: { question: attributes_for(:question) }
+        end.to have_broadcasted_to('questions').from_channel(QuestionsChannel)
+      end
     end
 
     context 'with invalid attributes' do

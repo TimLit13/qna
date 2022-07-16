@@ -1,12 +1,12 @@
 $(document).on('turbolinks:load', function(){
-  consumer.subscriptions.create("QuestionsChannel", {
+  App.cable.subscriptions.create("QuestionsChannel", {
     connected() {
-      console.log('Client connected')
+      console.log('Client connected to questions channel')
       this.perform('follow')
     },
 
     disconnected() {
-      console.log('Client disconnected')
+      console.log('Client disconnected from questions channel')
     },
 
     received(content) {

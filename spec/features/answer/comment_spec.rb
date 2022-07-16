@@ -8,7 +8,7 @@ feature 'User can create comment to answer', '
   given(:first_user) { create(:user) }
   given(:second_user) { create(:user) }
   given(:question) { create(:question, user: first_user) }
-  given!(:answer) { create(anser, question: question, user: first_user) }
+  given!(:answer) { create(answer, question: question, user: first_user) }
 
   describe 'Authenticated user' do
     background do

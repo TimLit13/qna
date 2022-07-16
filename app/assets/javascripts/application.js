@@ -2,10 +2,14 @@
 //= require turbolinks
 //= require jquery3
 //= require activestorage
-//= require action_cable
 //= require cocoon
 //= require gh3
 //= require_tree ./channels
 //= require_tree .
+//= require action_cable
+//= require skim
+//= require_tree ./templates
 
-let consumer = ActionCable.createConsumer(); 
+
+var App = App || {};
+App.cable = ActionCable.createConsumer(); 
