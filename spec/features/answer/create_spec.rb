@@ -18,8 +18,11 @@ feature 'User can create answer', '
     end
 
     scenario 'Can create an answer', js: true do
-      fill_in 'Body', with: 'Answer text'
-      click_on 'Create answer'
+      # save_and_open_page
+      within '.new-answer' do
+        fill_in 'Body', with: 'Answer text'
+        click_on 'Create answer'
+      end
 
       expect(page).to have_content 'Your answer successfully created!'
       expect(page).to have_content 'Answer text'
@@ -31,10 +34,12 @@ feature 'User can create answer', '
     end
 
     scenario 'answer with attached file', js: true do
-      fill_in 'Body', with: 'text text text'
+      within '.new-answer' do
+        fill_in 'Body', with: 'text text text'
 
-      attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
-      click_on 'Create answer'
+        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        click_on 'Create answer'
+      end
 
       expect(page).to have_link 'rails_helper.rb'
       expect(page).to have_link 'spec_helper.rb'
@@ -45,8 +50,10 @@ feature 'User can create answer', '
     background { visit question_path(question) }
 
     scenario 'Can not create an answer' do
-      fill_in 'Body', with: 'Answer text'
-      click_on 'Create answer'
+      within '.new-answer' do
+        fill_in 'Body', with: 'Answer text'
+        click_on 'Create answer'
+      end
 
       expect(page).to have_content 'You need to sign in or sign up before continuing.'
     end

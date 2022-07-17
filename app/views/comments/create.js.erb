@@ -1,0 +1,9 @@
+$('.comment-errors').html('<%= render 'shared/errors', resource: @comment %>');
+
+<% if @comment.persisted? %>
+  console.log('ajax success');
+  $(".<%= @comment.commentable.class.to_s.downcase %>-id-<%= @comment.commentable.id %>-comments").append('<%= j render @comment %>');
+  console.log('<%= j render @comment %>');
+  $(".<%= @comment.commentable.class.to_s.downcase %>-id-<%= @comment.commentable.id %>-new-comment #comment_body").val('');
+  $('.notice').text('').append('Your comment successfully created!');
+<% end %>

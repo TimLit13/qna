@@ -17,14 +17,13 @@ feature 'User can edit his answer', '
       visit question_path(question)
       click_on 'Edit'
 
-      within '.answers' do
+      within "#edit-answer-#{answer.id}" do
         fill_in 'Body', with: 'Edited answer'
         click_on 'Save'
-
-        expect(page).to_not have_content answer.body
-        expect(page).to have_content 'Edited answer'
-        expect(page).to_not have_selector('textarea')
       end
+
+      expect(page).to_not have_content answer.body
+      expect(page).to have_content 'Edited answer'
     end
 
     scenario 'Edits his answer with errors', js: true do
@@ -33,14 +32,13 @@ feature 'User can edit his answer', '
 
       click_on 'Edit'
 
-      within '.answers' do
+      within "#edit-answer-#{answer.id}" do
         fill_in 'Body', with: nil
         click_on 'Save'
-
-        expect(page).to have_content answer.body
-        expect(page).to have_content 'error'
-        expect(page).to have_selector('textarea')
       end
+
+      expect(page).to have_content answer.body
+      expect(page).to have_content 'error'
     end
 
     scenario 'Tries to edit other user answer', js: true do

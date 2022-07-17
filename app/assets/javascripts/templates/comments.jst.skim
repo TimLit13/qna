@@ -1,0 +1,5 @@
+- if (gon.user_id != @comment.user_id)  
+  . class="comment-id-#{@comment.id}"
+    p #{@comment.body}
+    i by #{@author.email}
+            
