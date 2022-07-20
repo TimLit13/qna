@@ -14,6 +14,9 @@ gem 'jbuilder', '~> 2.7'
 # gem 'bcrypt', '~> 3.1.7'
 gem 'slim-rails', '~> 3.1', '>= 3.1.1'
 gem 'devise', '~> 4.8', '>= 4.8.1'
+gem 'omniauth'
+gem 'omniauth-github'
+gem 'omniauth-rails_csrf_protection'
 
 gem 'jquery-rails', '~> 4.4'
 gem "aws-sdk-s3"
