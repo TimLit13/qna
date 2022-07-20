@@ -4,6 +4,10 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :load_question, only: %i[show edit update destroy]
 
+  before_action :pass_question_to_client, only: :show
+
+  after_action :publish_question, only: %i[create]
+
   def index
     @questions = Question.all
   end
@@ -55,11 +59,28 @@ class QuestionsController < ApplicationController
     @question = Question.with_attached_files.find(params[:id])
   end
 
+  def publish_question
+    return if @question.errors.any?
+
+    ActionCable.server.broadcast(
+      'questions',
+      ApplicationController.render(
+        partial: 'questions/question',
+        locals: { question: @question }
+      )
+    )
+  end
+
   def question_params
     params.require(:question).permit(:title,
                                      :body,
                                      files: [],
                                      links_attributes: %i[name url],
                                      award_attributes: %i[title image])
+  end
+
+  def pass_question_to_client
+    gon.user_id = current_user&.id
+    gon.question_id = @question.id
   end
 end

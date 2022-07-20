@@ -1,0 +1,6 @@
+. class="comment-id-#{comment.id}"
+  . class="comment-errors-#{comment.id}"
+    = render 'shared/errors', resource: comment
+
+  p= comment.body 
+  i= "by " + comment.user.email 

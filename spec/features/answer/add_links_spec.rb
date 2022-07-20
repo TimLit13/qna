@@ -36,37 +36,37 @@ feature 'User can add link to answer', '
     sign_in(user)
     visit question_path(question)
 
-    fill_in 'Body', with: 'Answer text'
+    within '.new-answer' do
+      fill_in 'Body', with: 'Answer text'
 
-    fill_in 'Name', with: link_google.name
-    fill_in 'Url', with: link_google.url
+      fill_in 'Name', with: link_google.name
+      fill_in 'Url', with: link_google.url
 
-    click_on 'Create answer'
-
-    within '.answers' do
-      expect(page).to have_link link_google.name, href: link_google.url
+      click_on 'Create answer'
     end
+
+    expect(page).to have_link link_google.name, href: link_google.url
   end
 
   scenario 'User adds two links when give an answer', js: true do
     sign_in(user)
     visit question_path(question)
 
-    fill_in 'Body', with: 'Answer text'
+    within '.new-answer' do
+      fill_in 'Body', with: 'Answer text'
 
-    fill_in 'Name', match: :first, with: link_google.name
-    fill_in 'Url', match: :first, with: link_google.url
+      fill_in 'Name', match: :first, with: link_google.name
+      fill_in 'Url', match: :first, with: link_google.url
 
-    click_on 'add link'
+      click_on 'add link'
 
-    page.all(:fillable_field, 'Name').last.set(link_github.name)
-    page.all(:fillable_field, 'Url').last.set(link_github.url)
+      page.all(:fillable_field, 'Name').last.set(link_github.name)
+      page.all(:fillable_field, 'Url').last.set(link_github.url)
 
-    click_on 'Create answer'
-
-    within '.answers' do
-      expect(page).to have_link link_google.name, href: link_google.url
-      expect(page).to have_link link_github.name, href: link_github.url
+      click_on 'Create answer'
     end
+
+    expect(page).to have_link link_google.name, href: link_google.url
+    expect(page).to have_link link_github.name, href: link_github.url
   end
 end

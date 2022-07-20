@@ -52,5 +52,13 @@
             = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
       p
         = f.submit 'Save'
+  br
+  hr
+  . class="answer-id-#{answer.id}-comments comments"
+    h4 Comments:
+    - if answer.comments.any?
+      = render answer.comments
+  p New Comment:
+  = render 'comments/new', resource: answer
   hr
   

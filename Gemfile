@@ -20,6 +20,9 @@ gem "aws-sdk-s3"
 gem 'cocoon', '~> 1.2', '>= 1.2.9'
 gem 'validate_url', '~> 1.0', '>= 1.0.2'
 
+gem 'gon', '~> 6.2'
+gem 'skim', '~> 0.11'
+
 # gem 'image_processing', '~> 1.2'
 
 gem 'bootsnap', '>= 1.4.4', require: false

@@ -16,10 +16,12 @@ feature 'User can edit his question', '
       visit question_path(question)
       click_on 'Edit'
 
-      within '.question' do
+      within "#edit-question-#{question.id}" do
         fill_in 'Body', with: 'Edited question'
         click_on 'Save'
+      end
 
+      within '.question' do
         expect(page).to_not have_content question.body
         expect(page).to have_content 'Edited question'
         expect(page).to_not have_selector('textarea')
@@ -32,14 +34,15 @@ feature 'User can edit his question', '
 
       click_on 'Edit'
 
-      within '.question' do
+      within "#edit-question-#{question.id}" do
+        # save_and_open_page
         fill_in 'Body', with: nil
         click_on 'Save'
-
-        expect(page).to have_content question.body
-        expect(page).to have_content 'error'
-        expect(page).to have_selector('textarea')
       end
+
+      expect(page).to have_content question.body
+      expect(page).to have_content 'error'
+      expect(page).to have_selector('textarea')
     end
 
     scenario 'Tries to edit other user answer', js: true do
