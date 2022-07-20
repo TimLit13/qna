@@ -9,6 +9,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :omniauthable, omniauth_providers: [:github]
 
+  def self.find_for_oauth(auth)
+  end
+
   def author_of?(res)
     res.user_id == id
   end
