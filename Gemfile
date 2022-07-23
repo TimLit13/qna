@@ -17,6 +17,8 @@ gem 'devise', '~> 4.8', '>= 4.8.1'
 gem 'omniauth'
 gem 'omniauth-github'
 gem 'omniauth-rails_csrf_protection'
+gem 'omniauth-vkontakte'
+gem 'omniauth-yandex'
 
 gem 'jquery-rails', '~> 4.4'
 gem "aws-sdk-s3"

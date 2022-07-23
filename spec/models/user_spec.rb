@@ -12,7 +12,7 @@ RSpec.describe User, type: :model do
     it { should validate_presence_of :password }
   end
 
-  describe '.author_of?' do
+  describe '#author_of?' do
     context 'user is author of any resource' do
       let(:first_user) { create(:user) }
       let(:question) { create(:question, user: first_user) }

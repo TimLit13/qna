@@ -8,6 +8,7 @@ RSpec.describe FindForOauth do
   context 'user already has authorization' do
     it 'returns the user' do
       user.authorizations.create(provider: 'facebook', uid: '123456')
+
       expect(subject.call).to eq user
     end
   end
