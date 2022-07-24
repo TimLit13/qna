@@ -5,7 +5,8 @@ RSpec.describe OauthCallbacksController, type: :controller do
     @request.env['devise.mapping'] = Devise.mappings[:user]
   end
   describe 'Github' do
-    let(:oauth_data) { { 'provider' => 'github', 'uid' => 123 } }
+    let(:oauth_data) { mock_auth_hash('Github') }
+    before { @request.env['omniauth.auth'] = oauth_data }
 
     it 'finds user from oauth data' do
       allow(request.env).to receive(:[]).and_call_original
@@ -48,7 +49,8 @@ RSpec.describe OauthCallbacksController, type: :controller do
   end
 
   describe 'Vkontakte' do
-    let(:oauth_data) { { 'provider' => 'vkontakte', 'uid' => 123 } }
+    let(:oauth_data) { mock_auth_hash('Vkontakte') }
+    before { @request.env['omniauth.auth'] = oauth_data }
 
     it 'finds user from oauth data' do
       allow(request.env).to receive(:[]).and_call_original
@@ -91,7 +93,8 @@ RSpec.describe OauthCallbacksController, type: :controller do
   end
 
   describe 'Yandex' do
-    let(:oauth_data) { { 'provider' => 'yandex', 'uid' => 123 } }
+    let(:oauth_data) { mock_auth_hash('Yandex') }
+    before { @request.env['omniauth.auth'] = oauth_data }
 
     it 'finds user from oauth data' do
       allow(request.env).to receive(:[]).and_call_original

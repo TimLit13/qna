@@ -6,9 +6,9 @@ feature 'User can sign in with github oauth2', '
   User would like to be able to sign in
   with his github account
 ' do
-  # given(:user) { create(:user) }
-
-  background { visit new_user_session_path }
+  background do
+    visit new_user_session_path
+  end
 
   describe 'github oauth' do
     scenario 'user can be able to sign in with github' do
@@ -16,46 +16,13 @@ feature 'User can sign in with github oauth2', '
     end
 
     context 'github provides email' do
-      scenario 'user can sign in with github' do
+      background do
         mock_auth_hash(:github)
         click_on 'Sign in with GitHub'
-        expect(page).to have_content 'Successfully authenticated from Github account'
-      end
-    end
-
-    context 'github does not provide email' do
-      background do
-        mock_auth_hash(:github)[:info][:email] = nil
-        click_on 'Sign in with GitHub'
-        clear_emails
       end
 
-      scenario 'user can see form for enter his email' do
-        expect(page).to have_content 'Please, enter your email'
-      end
-
-      scenario 'user can enter his email' do
-        fill_in 'email', with: 'test@test.com'
-        click_on 'Submit'
-        expect(page).to have_content 'Confirmation email sent to your email. Please confirm before'
-      end
-
-      scenario 'user can takes confirmation email' do
-        fill_in 'email', with: 'test@test.com'
-        click_on 'Submit'
-
-        open_email('test@test.com')
-        expect(current_email).to have_content 'Confirm email'
-      end
-
-      scenario 'user can sign in after confirmation email' do
-        fill_in 'email', with: 'test@test.com'
-        click_on 'Submit'
-
-        open_email('test@test.com')
-        current_email.click_link 'Confirm'
-
-        expect(page).to have_content 'Your email Successfully confirmed'
+      scenario 'user sign in with GitHub' do
+        expect(page).to have_content 'Successfully authenticated from Github account.'
       end
     end
   end
@@ -72,42 +39,6 @@ feature 'User can sign in with github oauth2', '
         expect(page).to have_content 'Successfully authenticated from Vkontakte account'
       end
     end
-
-    context 'vkontakte does not provide email' do
-      background do
-        mock_auth_hash(:vkontakte)[:info][:email] = nil
-        click_on 'Sign in with Vkontakte'
-        clear_emails
-      end
-
-      scenario 'user can see form for enter his email' do
-        expect(page).to have_content 'Please, enter your email'
-      end
-
-      scenario 'user can enter his email' do
-        fill_in 'email', with: 'test@test.com'
-        click_on 'Submit'
-        expect(page).to have_content 'Confirmation email sent to your email. Please confirm before'
-      end
-
-      scenario 'user can takes confirmation email' do
-        fill_in 'email', with: 'test@test.com'
-        click_on 'Submit'
-
-        open_email('test@test.com')
-        expect(current_email).to have_content 'Confirm email'
-      end
-
-      scenario 'user can sign in after confirmation email' do
-        fill_in 'email', with: 'test@test.com'
-        click_on 'Submit'
-
-        open_email('test@test.com')
-        current_email.click_link 'Confirm'
-
-        expect(page).to have_content 'Your email Successfully confirmed'
-      end
-    end
   end
 
   describe 'yandex oauth' do
@@ -122,41 +53,50 @@ feature 'User can sign in with github oauth2', '
         expect(page).to have_content 'Successfully authenticated from Yandex account'
       end
     end
+  end
 
-    context 'yandex does not provide email' do
-      background do
-        mock_auth_hash(:yandex)[:info][:email] = nil
-        click_on 'Sign in with Yandex'
-        clear_emails
-      end
+  describe 'provider does not provide email' do
+    background do
+      mock_auth_hash(:github)[:info][:email] = nil
+      click_on 'Sign in with GitHub'
+    end
 
-      scenario 'user can see form for enter his email' do
-        expect(page).to have_content 'Please, enter your email'
-      end
+    scenario 'user can see form for enter his email' do
+      expect(page).to have_content 'Please, enter your email'
+    end
 
-      scenario 'user can enter his email' do
-        fill_in 'email', with: 'test@test.com'
-        click_on 'Submit'
-        expect(page).to have_content 'Confirmation email sent to your email. Please confirm before'
-      end
+    scenario 'user see form to send his email' do
+      fill_in 'email', with: 'test@test.com'
 
-      scenario 'user can takes confirmation email' do
-        fill_in 'email', with: 'test@test.com'
-        click_on 'Submit'
+      click_on 'Submit'
 
-        open_email('test@test.com')
-        expect(current_email).to have_content 'Confirm email'
-      end
+      expect(page).to have_content 'Check your email to confirm registration!'
+    end
 
-      scenario 'user can sign in after confirmation email' do
-        fill_in 'email', with: 'test@test.com'
-        click_on 'Submit'
+    scenario 'user can not enter invalid email' do
+      fill_in 'email', with: nil
+      click_on 'Submit'
 
-        open_email('test@test.com')
-        current_email.click_link 'Confirm'
+      expect(page).to have_content 'Please, enter valid email'
+    end
 
-        expect(page).to have_content 'Your email Successfully confirmed'
-      end
+    scenario 'user can takes confirmation email' do
+      fill_in 'email', with: 'test@test.com'
+      click_on 'Submit'
+
+      open_email('test@test.com')
+
+      expect(current_email).to have_content 'Confirm my account'
+    end
+
+    scenario 'user can sign in after email confirmation' do
+      fill_in 'email', with: 'test@test.com'
+      click_on 'Submit'
+
+      open_email('test@test.com')
+      current_email.click_link 'Confirm'
+
+      expect(page).to have_content 'Your email address has been successfully confirmed.'
     end
   end
 end

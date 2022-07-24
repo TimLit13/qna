@@ -38,6 +38,7 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'capybara-email'
   gem 'dotenv-rails'
+  gem 'letter_opener'
 end
 
 group :development do
