@@ -21,6 +21,9 @@ module Qna
 
     config.action_cable.disable_request_forgery_protection = true
 
+    # config.autoload_paths += [config.root.join('app')]
+    # config.autoload_paths.push("#{Rails.root}/app/services")
+
     config.generators do |g|
       g.test_framework :rspec, 
                         view_specs: false,

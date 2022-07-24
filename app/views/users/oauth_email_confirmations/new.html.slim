@@ -1,0 +1,8 @@
+h3 Please, enter your email
+
+= form_with url: users_oauth_email_confirmations_path, method: :post, local: true do |f|
+  p
+    = f.label :email
+    = f.text_field :email
+
+  = f.submit 'Submit'
