@@ -5,5 +5,5 @@ h3 List of questions
 
 . class='questions-list'
   = render partial: 'question', collection: @questions
-
-p= link_to 'Ask question', new_question_path
+- if can?(:create, Question)
+  p= link_to 'Ask question', new_question_path
