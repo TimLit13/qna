@@ -2,7 +2,7 @@
   .rating-value
     = resource.total_rating
 
-  - unless !user_signed_in? || current_user&.author_of?(resource)
+  - if can?(:rate_up, resource) || can?(:rate_down, resource) || can?(:cancel_rate, resource)
     . class="rate-up #{'hidden' if resource.rated_before?(current_user)}"
       = link_to 'Rate up', polymorphic_path(resource, action: :rate_up),
                            data: { type: :json },

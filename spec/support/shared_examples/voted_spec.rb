@@ -144,12 +144,13 @@ shared_examples_for 'voted' do
     end
 
     it 'responds to json format' do
-      put :rate_down, params: @params
+      put :rate_down, params: @params, format: :js
+
       expect(response.content_type).to include('json')
     end
 
     it 'render json with errors' do
-      put :rate_down, params: @params
+      put :rate_down, params: @params, format: :js
       expect(response.body).to include('unprocessable_entity')
       expect(response.body).to include('error')
     end

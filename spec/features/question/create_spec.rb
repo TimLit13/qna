@@ -24,7 +24,6 @@ feature 'User can create question', '
 
       click_on 'Ask'
 
-      # save_and_open_page
       expect(page).to have_content 'Your question successfully created'
       expect(page).to have_content 'Test question'
       expect(page).to have_content 'text text text'
@@ -51,9 +50,8 @@ feature 'User can create question', '
   describe 'Unauthenticated user' do
     scenario 'Tries to ask a question' do
       visit questions_path
-      click_on 'Ask question'
 
-      expect(page).to have_content 'You need to sign in or sign up before continuing.'
+      expect(page).to_not have_selector(:link_or_button, 'Ask question')
     end
   end
 

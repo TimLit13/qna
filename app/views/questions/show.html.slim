@@ -22,4 +22,5 @@
   - else
     p= 'No answers yet'
 
-=render 'answers/new', resource: @question
+- if can?(:create, Answer)
+  =render 'answers/new', resource: @question

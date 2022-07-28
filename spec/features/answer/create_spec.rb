@@ -50,12 +50,8 @@ feature 'User can create answer', '
     background { visit question_path(question) }
 
     scenario 'Can not create an answer' do
-      within '.new-answer' do
-        fill_in 'Body', with: 'Answer text'
-        click_on 'Create answer'
-      end
-
-      expect(page).to have_content 'You need to sign in or sign up before continuing.'
+      expect(page).to_not have_selector '.new-answer'
+      expect(page).to_not have_selector(:link_or_button, 'Create answer')
     end
   end
 
