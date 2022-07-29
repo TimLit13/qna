@@ -2,7 +2,11 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :find_commentable
 
+  before_action :authorize_comment!
+
   after_action :publish_comment, only: :create
+
+  after_action :verify_authorized
 
   def create
     @comment = @commentable.comments.new(comment_params)
@@ -46,5 +50,9 @@ class CommentsController < ApplicationController
       type_id: @commentable.id,
       author: @comment.user
     }
+  end
+
+  def authorize_comment!
+    authorize(@comment || Comment)
   end
 end

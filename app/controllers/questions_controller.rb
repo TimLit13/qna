@@ -6,7 +6,11 @@ class QuestionsController < ApplicationController
 
   before_action :pass_question_to_client, only: :show
 
+  before_action :authorize_question!
+
   after_action :publish_question, only: %i[create]
+
+  after_action :verify_authorized
 
   def index
     @questions = Question.all
@@ -82,5 +86,9 @@ class QuestionsController < ApplicationController
   def pass_question_to_client
     gon.user_id = current_user&.id
     gon.question_id = @question.id
+  end
+
+  def authorize_question!
+    authorize(@question || Question)
   end
 end

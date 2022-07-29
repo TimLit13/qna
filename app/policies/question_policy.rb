@@ -1,4 +1,4 @@
-class AnswerPolicy < ApplicationPolicy
+class QuestionPolicy < ApplicationPolicy
   class Scope < Scope
   end
 
@@ -12,10 +12,6 @@ class AnswerPolicy < ApplicationPolicy
 
   def destroy?
     user&.admin? || user&.author_of?(record)
-  end
-
-  def mark_answer_as_best?
-    user&.admin? || user&.author_of?(record.question)
   end
 
   def rate_up?

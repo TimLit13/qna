@@ -5,7 +5,11 @@ class AnswersController < ApplicationController
   before_action :find_question, only: %i[create publish_answer]
   before_action :find_answer, only: %i[update destroy mark_answer_as_best]
 
+  before_action :authorize_answer!
+
   after_action :publish_answer, only: :create
+
+  after_action :verify_authorized
 
   def create
     @answer = @question.answers.new(answer_params)
@@ -81,5 +85,9 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body, files: [], links_attributes: %i[name url _destroy])
+  end
+
+  def authorize_answer!
+    authorize(@answer || Answer)
   end
 end
