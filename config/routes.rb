@@ -7,6 +7,14 @@ Rails.application.routes.draw do
     resource :oauth_email_confirmations, only: %i[new create]
   end
 
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only: [] do
+        get :me, on: :collection
+      end
+    end
+  end
+
   concern :votable do
     member do
       put :rate_up
