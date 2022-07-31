@@ -6,6 +6,7 @@ module Voted
   end
 
   def rate_up
+    authorize @votable
     if current_user.author_of?(@votable)
       add_message_into_errors
       render_json_with_errors
@@ -17,6 +18,7 @@ module Voted
   end
 
   def rate_down
+    authorize @votable
     if current_user.author_of?(@votable)
       add_message_into_errors
       render_json_with_errors
@@ -28,6 +30,7 @@ module Voted
   end
 
   def cancel_rate
+    authorize @votable
     if current_user.author_of?(@votable)
       add_message_into_errors
       render_json_with_errors
