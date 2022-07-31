@@ -6,13 +6,19 @@ class QuestionsController < ApplicationController
 
   before_action :pass_question_to_client, only: :show
 
+  # before_action :authorize_question!
+
   after_action :publish_question, only: %i[create]
 
+  after_action :verify_authorized
+
   def index
+    authorize Question
     @questions = Question.all
   end
 
   def show
+    authorize @question
     @best_answer = @question.best_answer
     @other_answers = @question.answers.where.not(id: @question.best_answer_id)
     @answer = @question.answers.new
@@ -21,15 +27,18 @@ class QuestionsController < ApplicationController
 
   def new
     @question = Question.new
+    authorize @question
     @question.links.new # build_links
     @question.build_award # new
   end
 
   def edit
+    authorize @question
   end
 
   def create
     @question = Question.new(question_params)
+    authorize @question
     @question.user = current_user
     notice = 'Your question successfully created'
     notice = @question.award.present? ? "#{notice} with award" : notice
@@ -41,10 +50,12 @@ class QuestionsController < ApplicationController
   end
 
   def update
+    authorize @question
     @question.update(question_params)
   end
 
   def destroy
+    authorize @question
     if @question.user == current_user
       @question.destroy
       redirect_to questions_path, notice: 'Question was successfully deleted'
@@ -83,4 +94,8 @@ class QuestionsController < ApplicationController
     gon.user_id = current_user&.id
     gon.question_id = @question.id
   end
+
+  # def authorize_question!
+  #   authorize(@question || Question)
+  # end
 end
