@@ -7,17 +7,11 @@ RSpec.describe 'Questions API', type: :request do
   end
 
   describe 'GET /api/v1/questions' do
+    let(:api_path) { '/api/v1/questions' }
+
     context 'unauthorized' do
-      it 'returns 401 status if the is no access_token' do
-        get '/api/v1/questions', headers: headers
-
-        expect(response).to have_http_status(:unauthorized)
-      end
-
-      it 'returns 401 if access_token is invalid' do
-        get '/api/v1/questions', params: { access_token: 'smth' }, headers: headers
-
-        expect(response).to have_http_status(:unauthorized)
+      it_behaves_like 'API Authorizable' do
+        let(:method) { :get }
       end
     end
 
@@ -30,7 +24,7 @@ RSpec.describe 'Questions API', type: :request do
       let!(:answers) { create_list(:answer, 3, user: user, question: question) }
 
       before do
-        get '/api/v1/questions', params: { access_token: access_token.token }, headers: headers
+        get api_path, params: { access_token: access_token.token }, headers: headers
       end
 
       it 'returns 20x status' do

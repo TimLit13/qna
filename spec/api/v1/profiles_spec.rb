@@ -7,6 +7,11 @@ RSpec.describe 'Profiles API', type: :request do
   end
 
   describe 'GET /api/v1/profiles/me' do
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :get }
+      let(:api_path) { '/api/v1/profiles/me' }
+    end
+
     context 'unauthorized' do
       it 'returns 401 status if the is no access_token' do
         get '/api/v1/profiles/me', headers: headers
