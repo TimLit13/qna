@@ -67,7 +67,7 @@ RSpec.describe 'Profiles API', type: :request do
 
       it 'returns 401 if access_token is invalid' do
         get '/api/v1/profiles/all', params: { access_token: 'smth' }, headers: headers
-        
+
         expect(response).to have_http_status(:unauthorized)
       end
     end
