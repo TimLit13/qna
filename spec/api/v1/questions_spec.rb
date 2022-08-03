@@ -165,4 +165,70 @@ RSpec.describe 'Questions API', type: :request do
       end
     end
   end
+
+  describe 'POST /api/v1/question/' do
+    let(:user) { create(:user) }
+    let!(:api_path) { '/api/v1/questions/' }
+    
+    context 'unauthorized' do
+      it_behaves_like 'API Authorizable' do
+        let(:method) { :post }
+        let(:path) { api_path }
+      end
+    end
+
+    context 'authorized' do
+      let(:access_token) { create(:access_token) }
+
+      it 'returns 20x status' do
+        post api_path, params: { access_token: access_token.token, question: attributes_for(:question)  }.to_json, headers: headers
+
+        expect(response).to be_successful
+      end
+
+      context 'invalid attributes' do
+        it 'does not save new question in db' do
+          expect{ post api_path, 
+                  params: { access_token: access_token.token, 
+                            question: attributes_for(:question, :invalid)  
+                          }.to_json, 
+                  headers: headers 
+                }.to_not change(Question, :count)
+        end
+
+        it 'returns 422 status' do
+          post api_path, params: { access_token: access_token.token, question: attributes_for(:question, :invalid)  }.to_json, headers: headers
+
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
+      end
+
+      context 'valid attributes' do
+        let(:attributes_for_question) { attributes_for(:question) }
+
+        it 'saves new question in db' do
+          expect{ post api_path, 
+                  params: { access_token: access_token.token, 
+                            question: attributes_for_question  
+                          }.to_json, 
+                  headers: headers 
+                }.to change(Question, :count).by(1)
+        end
+
+        it 'returns 20x status' do
+          post api_path, params: { access_token: access_token.token, question: attributes_for_question  }.to_json, headers: headers
+
+          expect(response).to be_successful
+        end
+
+        it 'returns saved question with all public fields' do
+          post api_path, params: { access_token: access_token.token, question: attributes_for_question  }.to_json, headers: headers
+
+          %w[id title body created_at updated_at].each do |attr|
+            expect(json['question'][attr]).to eq(Question.first.send(attr).as_json)
+          end
+        end
+      end
+    end
+  end
 end

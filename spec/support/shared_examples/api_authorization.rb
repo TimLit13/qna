@@ -8,7 +8,7 @@ shared_examples_for 'API Authorizable' do
   end
 
   it 'returns 401 if access_token is invalid' do
-    do_request(method, api_path, params: { access_token: 'smth' }, headers: headers)
+    do_request(method, api_path, params: { access_token: 'smth' }.to_json, headers: headers)
 
     expect(response).to have_http_status(:unauthorized)
   end
