@@ -207,4 +207,78 @@ RSpec.describe 'Answers API', type: :request do
       end
     end
   end
+
+  describe 'PATCH /api/v1/questions/:question_id/answers/id' do
+    let(:user) { create(:user) }
+    let(:question) { create(:question, user: user) }
+    let!(:answer) { create(:answer, user: user, question: question) }
+    let!(:comments) { create_list(:comment, 3, user: user, commentable: answer) }
+    let!(:links) { create_list(:link, 3, :google, linkable: answer) }
+    let!(:api_path) { "/api/v1/questions/#{question.id}/answers/#{answer.id}" }
+
+    context 'unauthorized' do
+      it_behaves_like 'API Authorizable' do
+        let(:method) { :patch }
+        let(:path) { api_path }
+      end
+    end
+
+    context 'authorized' do
+      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+
+      it 'returns 20x status' do
+        patch api_path, params: { access_token: access_token.token, answer: { body: 'Updated body' } }.to_json,
+                        headers: headers
+
+        expect(response).to be_successful
+      end
+
+      context 'invalid attributes' do
+        it 'does not update answer in db' do
+          patch api_path,
+                params: { access_token: access_token.token, answer: attributes_for(:answer, :invalid) }.to_json, headers: headers
+
+          answer.reload
+
+          expect(answer.body).to_not eq(nil)
+        end
+
+        it 'returns 422 status' do
+          patch api_path,
+                params: { access_token: access_token.token, answer: attributes_for(:answer, :invalid) }.to_json, headers: headers
+
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
+      end
+
+      context 'valid attributes' do
+        context 'author of answer' do
+          it 'updates answer in db' do
+            patch api_path, params: { access_token: access_token.token, answer: { body: 'Updated body' } }.to_json,
+                            headers: headers
+
+            answer.reload
+
+            expect(answer.body).to eq('Updated body')
+          end
+
+          it 'returns 20x status' do
+            patch api_path, params: { access_token: access_token.token, answer: { body: 'Updated body' } }.to_json,
+                            headers: headers
+
+            expect(response).to be_successful
+          end
+
+          it 'returns updated answer with all public fields' do
+            patch api_path, params: { access_token: access_token.token, answer: { body: 'Updated body' } }.to_json,
+                            headers: headers
+
+            %w[id body created_at updated_at].each do |attr|
+              expect(json['answer'][attr]).to eq(Answer.first.send(attr).as_json)
+            end
+          end
+        end
+      end
+    end
+  end
 end

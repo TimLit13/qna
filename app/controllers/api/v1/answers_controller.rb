@@ -1,6 +1,6 @@
 class Api::V1::AnswersController < Api::V1::BaseController
-  before_action :find_question, only: %i[index show create]
-  before_action :find_answer, only: %i[show]
+  before_action :find_question, only: %i[index show create update]
+  before_action :find_answer, only: %i[show update]
   protect_from_forgery with: :null_session
 
   def index
@@ -24,6 +24,15 @@ class Api::V1::AnswersController < Api::V1::BaseController
       render json: answer
     else
       render json: { errors: answer.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    # authorize @answer
+    if @answer.update(answer_params)
+      render json: @answer
+    else
+      render json: { errors: @answer.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
