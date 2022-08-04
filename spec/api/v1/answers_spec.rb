@@ -281,4 +281,40 @@ RSpec.describe 'Answers API', type: :request do
       end
     end
   end
+
+  describe 'DELETE /api/v1/questions/:question_id/answers/:id' do
+    let(:user) { create(:user) }
+    let(:question) { create(:question, user: user) }
+    let!(:answer) { create(:answer, user: user, question: question) }
+    let!(:comments) { create_list(:comment, 3, user: user, commentable: answer) }
+    let!(:links) { create_list(:link, 3, :google, linkable: question) }
+    let!(:api_path) { "/api/v1/questions/#{question.id}/answers/#{answer.id}" }
+
+    context 'unauthorized' do
+      it_behaves_like 'API Authorizable' do
+        let(:method) { :delete }
+        let(:path) { api_path }
+      end
+    end
+
+    context 'authorized' do
+      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+
+      context 'author of question' do
+        it 'returns 20x status' do
+          delete api_path,
+                 params: { access_token: access_token.token, question_id: question.id, id: answer.id }.to_json, headers: headers
+
+          expect(response).to be_successful
+        end
+
+        it 'deletes answer from db' do
+          expect do
+            delete api_path, params: { access_token: access_token.token, question_id: question.id, id: answer.id }.to_json,
+                             headers: headers
+          end.to change(Answer, :count).by(-1)
+        end
+      end
+    end
+  end
 end

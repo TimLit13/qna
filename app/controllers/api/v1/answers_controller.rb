@@ -1,6 +1,6 @@
 class Api::V1::AnswersController < Api::V1::BaseController
   before_action :find_question, only: %i[index show create update]
-  before_action :find_answer, only: %i[show update]
+  before_action :find_answer, only: %i[show update destroy]
   protect_from_forgery with: :null_session
 
   def index
@@ -35,6 +35,17 @@ class Api::V1::AnswersController < Api::V1::BaseController
       render json: { errors: @answer.errors.full_messages }, status: :unprocessable_entity
     end
   end
+
+  def destroy
+    # authorize @answer
+    if @answer.destroy
+      render json: { messages: ['Answer deleted'] }
+    else
+      render json: { errors: @answer.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  private
 
   def find_question
     @question = Question.find(params[:question_id])
