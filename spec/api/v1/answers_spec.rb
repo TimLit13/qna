@@ -50,4 +50,90 @@ RSpec.describe 'Answers API', type: :request do
       end
     end
   end
+
+  describe 'GET /api/v1/questions/:question_id/answers/:id' do
+    let(:user) { create(:user) }
+    let(:question) { create(:question, user: user) }
+    let!(:answer) { create(:answer, :with_files, user: user, question: question) }
+    let!(:comments) { create_list(:comment, 3, user: user, commentable: answer) }
+    let!(:links) { create_list(:link, 3, :google, linkable: answer) }
+    let(:api_path) { "/api/v1/questions/#{question.id}/answers/#{answer.id}" }
+
+    context 'unauthorized' do
+      it_behaves_like 'API Authorizable' do
+        let(:method) { :get }
+      end
+    end
+
+    context 'authorized' do
+      let(:access_token) { create(:access_token) }
+
+      before do
+        get api_path, params: { access_token: access_token.token, question_id: question.id, id: answer.id },
+                      headers: headers
+      end
+
+      it 'returns 20x status' do
+        expect(response).to be_successful
+      end
+
+      it 'returns requested answer' do
+        expect(json['answer']['id']).to eq(answer.id)
+      end
+
+      it 'returns all public fields' do
+        %w[id body created_at updated_at].each do |attr|
+          expect(json['answer'][attr]).to eq(answer.send(attr).as_json)
+        end
+      end
+
+      it 'contains user object' do
+        expect(json['answer']['user']['id']).to eq(answer.user.id)
+      end
+
+      it 'contains short body' do
+        expect(json['answer']['short_body']).to eq(answer.body.truncate(7))
+      end
+
+      describe 'comments' do
+        let(:comment) { comments.first }
+
+        it 'returns list of answers' do
+          expect(json['answer']['comments'].count).to eq(comments.count)
+        end
+
+        it 'returns all public fields' do
+          %w[id body created_at updated_at].each do |attr|
+            expect(json['answer']['comments'].first[attr]).to eq(comment.send(attr).as_json)
+          end
+        end
+      end
+
+      describe 'links' do
+        let(:link) { links.first }
+
+        it 'returns list of links' do
+          expect(json['answer']['links'].count).to eq(links.count)
+        end
+
+        it 'returns all public fields' do
+          %w[name url].each do |attr|
+            expect(json['answer']['links'].first[attr]).to eq(link.send(attr).as_json)
+          end
+        end
+      end
+
+      describe 'files' do
+        let(:file) { answer.files.first }
+
+        it 'returns list of files' do
+          expect(json['answer']['files'].count).to eq(answer.files.count)
+        end
+
+        it 'returns url of file' do
+          expect(json['answer']['files'].first['url']).to include(file.blob.filename.to_s)
+        end
+      end
+    end
+  end
 end
