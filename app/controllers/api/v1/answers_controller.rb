@@ -4,20 +4,22 @@ class Api::V1::AnswersController < Api::V1::BaseController
   protect_from_forgery with: :null_session
 
   def index
-    # authorize Answer
+    authorize Answer
 
     render json: @question.answers
   end
 
   def show
-    # authorize @answer
+    authorize @answer
 
     render json: @answer
   end
 
   def create
     answer = @question.answers.new(answer_params)
-    # authorize answer
+
+    authorize answer
+
     answer.user_id = current_resource_owner.id
 
     if answer.save
@@ -28,7 +30,8 @@ class Api::V1::AnswersController < Api::V1::BaseController
   end
 
   def update
-    # authorize @answer
+    authorize @answer
+
     if @answer.update(answer_params)
       render json: @answer
     else
@@ -37,7 +40,8 @@ class Api::V1::AnswersController < Api::V1::BaseController
   end
 
   def destroy
-    # authorize @answer
+    authorize @answer
+
     if @answer.destroy
       render json: { messages: ['Answer deleted'] }
     else

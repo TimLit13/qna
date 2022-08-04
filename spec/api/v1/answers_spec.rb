@@ -278,6 +278,21 @@ RSpec.describe 'Answers API', type: :request do
             end
           end
         end
+
+        context 'user is not author of question' do
+          let(:not_author_user) { create(:user) }
+          let(:other_answer) { create(:answer, question: question, user: not_author_user) }
+          let!(:other_api_path) { "/api/v1/questions/#{question.id}/answers/#{other_answer.id}" }
+
+          it 'does not update answer in db' do
+            patch other_api_path, params: { access_token: access_token.token, answer: { body: 'Updated body' } }.to_json,
+                                  headers: headers
+
+            other_answer.reload
+
+            expect(other_answer.body).to_not eq('Updated body')
+          end
+        end
       end
     end
   end
@@ -313,6 +328,18 @@ RSpec.describe 'Answers API', type: :request do
             delete api_path, params: { access_token: access_token.token, question_id: question.id, id: answer.id }.to_json,
                              headers: headers
           end.to change(Answer, :count).by(-1)
+        end
+      end
+
+      context 'user is not author of question' do
+        let(:not_author_user) { create(:user) }
+        let(:other_answer) { create(:answer, question: question, user: not_author_user) }
+        let!(:other_api_path) { "/api/v1/questions/#{question.id}/answers/#{other_answer.id}" }
+
+        it 'does not delete answer from db' do
+          expect do
+            delete other_api_path, params: { access_token: access_token.token }.to_json, headers: headers
+          end.to_not change(Answer, :count)
         end
       end
     end
