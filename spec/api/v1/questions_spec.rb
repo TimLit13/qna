@@ -252,7 +252,7 @@ RSpec.describe 'Questions API', type: :request do
     end
 
     context 'authorized' do
-      let(:access_token) { create(:access_token) }
+      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
       it 'returns 20x status' do
         patch api_path, params: { access_token: access_token.token, question: { title: 'Updated title' } }.to_json,
@@ -280,28 +280,45 @@ RSpec.describe 'Questions API', type: :request do
       end
 
       context 'valid attributes' do
-        it 'update question in db' do
-          patch api_path, params: { access_token: access_token.token, question: { title: 'Updated title' } }.to_json,
-                          headers: headers
+        context 'author of question' do
+          it 'update question in db' do
+            patch api_path, params: { access_token: access_token.token, question: { title: 'Updated title' } }.to_json,
+                            headers: headers
 
-          question.reload
+            question.reload
 
-          expect(question.title).to eq('Updated title')
+            expect(question.title).to eq('Updated title')
+          end
+
+          it 'returns 20x status' do
+            patch api_path, params: { access_token: access_token.token, question: { title: 'Updated title' } }.to_json,
+                            headers: headers
+
+            expect(response).to be_successful
+          end
+
+          it 'returns updated question with all public fields' do
+            patch api_path, params: { access_token: access_token.token, question: { title: 'Updated title' } }.to_json,
+                            headers: headers
+
+            %w[id title body created_at updated_at].each do |attr|
+              expect(json['question'][attr]).to eq(Question.first.send(attr).as_json)
+            end
+          end
         end
 
-        it 'returns 20x status' do
-          patch api_path, params: { access_token: access_token.token, question: { title: 'Updated title' } }.to_json,
-                          headers: headers
+        context 'user is not author of question' do
+          let(:not_author_user) { create(:user) }
+          let(:other_question) { create(:question, user: not_author_user) }
+          let!(:other_api_path) { "/api/v1/questions/#{other_question.id}" }
 
-          expect(response).to be_successful
-        end
+          it 'does not update question in db' do
+            patch other_api_path, params: { access_token: access_token.token, question: { title: 'Updated title' } }.to_json,
+                                  headers: headers
 
-        it 'returns updated question with all public fields' do
-          patch api_path, params: { access_token: access_token.token, question: { title: 'Updated title' } }.to_json,
-                          headers: headers
+            other_question.reload
 
-          %w[id title body created_at updated_at].each do |attr|
-            expect(json['question'][attr]).to eq(Question.first.send(attr).as_json)
+            expect(other_question.title).to_not eq('Updated title')
           end
         end
       end
@@ -310,7 +327,7 @@ RSpec.describe 'Questions API', type: :request do
 
   describe 'DELETE /api/v1/question/:id' do
     let(:user) { create(:user) }
-    let(:question) { create(:question, :with_files, user: user) }
+    let!(:question) { create(:question, :with_files, user: user) }
     let!(:answers) { create_list(:answer, 3, user: user, question: question) }
     let!(:comments) { create_list(:comment, 3, user: user, commentable: question) }
     let!(:links) { create_list(:link, 3, :google, linkable: question) }
@@ -324,19 +341,33 @@ RSpec.describe 'Questions API', type: :request do
     end
 
     context 'authorized' do
-      let(:access_token) { create(:access_token) }
+      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
-      it 'returns 20x status' do
-        delete api_path, params: { access_token: access_token.token }.to_json, headers: headers
+      context 'author of question' do
+        it 'returns 20x status' do
+          delete api_path, params: { access_token: access_token.token }.to_json, headers: headers
 
-        expect(response).to be_successful
+          expect(response).to be_successful
+        end
+
+        it 'deletes question from db' do
+          expect do
+            delete api_path, params: { access_token: access_token.token, question_id: question }.to_json,
+                             headers: headers
+          end.to change(Question, :count).by(-1)
+        end
       end
 
-      it 'delete question from db' do
-        expect do
-          delete api_path, params: { access_token: access_token.token }.to_json,
-                           headers: headers
-        end.to change(Question, :count).by(-1)
+      context 'user is not author of question' do
+        let(:not_author_user) { create(:user) }
+        let(:other_question) { create(:question, user: not_author_user) }
+        let!(:other_api_path) { "/api/v1/questions/#{other_question.id}" }
+
+        it 'does not delete question from db' do
+          expect do
+            delete other_api_path, params: { access_token: access_token.token }.to_json, headers: headers
+          end.to_not change(Question, :count)
+        end
       end
     end
   end

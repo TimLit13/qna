@@ -1,5 +1,6 @@
 class Api::V1::QuestionsController < Api::V1::BaseController
   before_action :find_question, only: %i[show update destroy]
+  protect_from_forgery with: :null_session
 
   def index
     @questions = Question.all
@@ -13,6 +14,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
 
   def create
     question = current_resource_owner.questions.new(question_params)
+    authorize question
 
     if question.save
       render json: question
@@ -22,6 +24,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def update
+    authorize @question
     if @question.update(question_params)
       render json: @question
     else
@@ -30,6 +33,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def destroy
+    authorize @question
     if @question.destroy
       render json: { messages: ['Question deleted'] }
     else
