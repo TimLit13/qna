@@ -1,6 +1,4 @@
 class AttachmentsController < ApplicationController
-  before_action :skip_all_authorization
-
   before_action :authenticate_user!, only: :destroy
   before_action :find_attachment, only: :destroy
 
