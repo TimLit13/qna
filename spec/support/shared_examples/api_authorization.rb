@@ -43,3 +43,9 @@ shared_examples_for 'Returns list of resources' do
     expect(resources_response.size).to eq(resources.count)
   end
 end
+
+shared_examples_for 'Contains user object' do
+  it 'contains user object' do
+    expect(resource_response['user']['id']).to eq(resource.user.id)
+  end
+end

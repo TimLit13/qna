@@ -40,8 +40,9 @@ RSpec.describe 'Questions API', type: :request do
         let(:resource_response) { question_response }
       end
 
-      it 'contains user object' do
-        expect(question_response['user']['id']).to eq(question.user.id)
+      it_behaves_like 'Contains user object' do
+        let(:resource) { question }
+        let(:resource_response){ question_response }
       end
 
       it 'contains short title' do
@@ -100,8 +101,9 @@ RSpec.describe 'Questions API', type: :request do
         let(:resource_response) { json['question'] }
       end
 
-      it 'contains user object' do
-        expect(json['question']['user']['id']).to eq(question.user.id)
+      it_behaves_like 'Contains user object' do
+        let(:resource) { question }
+        let(:resource_response){ json['question'] }
       end
 
       it 'contains short title' do
@@ -184,15 +186,13 @@ RSpec.describe 'Questions API', type: :request do
 
       it_behaves_like 'Successfull response' do
         before do
-          post api_path, params: { access_token: access_token.token, question: attributes_for(:question) }.to_json,
-                         headers: headers
+          post api_path, params: { access_token: access_token.token, question: attributes_for(:question) }.to_json, headers: headers
         end
       end
 
       context 'invalid attributes' do
         before do
-          post api_path,
-               params: { access_token: access_token.token, question: attributes_for(:question, :invalid) }.to_json, headers: headers
+          post api_path, params: { access_token: access_token.token, question: attributes_for(:question, :invalid) }.to_json, headers: headers
         end
 
         it 'does not save new question in db' do

@@ -40,8 +40,9 @@ RSpec.describe 'Answers API', type: :request do
         let(:resource_response) { json['answers'].first }
       end
 
-      it 'contains user object' do
-        expect(json['answers'].first['user']['id']).to eq(answers.first.user.id)
+      it_behaves_like 'Contains user object' do
+        let(:resource) { answers.first }
+        let(:resource_response){ json['answers'].first }
       end
 
       it 'contains short body' do
@@ -84,8 +85,9 @@ RSpec.describe 'Answers API', type: :request do
         let(:resource_response) { json['answer'] }
       end
 
-      it 'contains user object' do
-        expect(json['answer']['user']['id']).to eq(answer.user.id)
+      it_behaves_like 'Contains user object' do
+        let(:resource) { answer }
+        let(:resource_response){ json['answer'] }
       end
 
       it 'contains short body' do
