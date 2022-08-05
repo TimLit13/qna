@@ -34,9 +34,7 @@ RSpec.describe 'Profiles API', type: :request do
         get '/api/v1/profiles/me', params: { access_token: access_token.token }, headers: headers
       end
 
-      it 'returns 20x status' do
-        expect(response).to be_successful
-      end
+      it_behaves_like 'Successfull response'
 
       it 'returns all public fields' do
         %w[id email admin created_at updated_at].each do |attr|
@@ -81,19 +79,17 @@ RSpec.describe 'Profiles API', type: :request do
         get '/api/v1/profiles/all', params: { access_token: access_token.token }, headers: headers
       end
 
-      it 'returns 20x status' do
-        expect(response).to be_successful
-      end
+      it_behaves_like 'Successfull response'
 
       it 'returns users list without one' do
         expect(json['users'].count).to eq(User.count - 1)
         expect(json['users'].count).to eq(1)
       end
 
-      it 'returns all public fields' do
-        %w[id email created_at updated_at].each do |attr|
-          expect(json['users'].first[attr]).to eq(other_user.send(attr).as_json)
-        end
+      it_behaves_like 'Public fields' do
+        let(:attributes) { %w[id email created_at updated_at] }
+        let(:resource) { other_user }
+        let(:resource_response) { json['users'].first }
       end
 
       it 'does not return private fields' do

@@ -27,18 +27,16 @@ RSpec.describe 'Questions API', type: :request do
         get api_path, params: { access_token: access_token.token }, headers: headers
       end
 
-      it 'returns 20x status' do
-        expect(response).to be_successful
-      end
+      it_behaves_like 'Successfull response'
 
       it 'returns list of questions' do
         expect(json['questions'].size).to eq(questions.count)
       end
 
-      it 'returns all public fields' do
-        %w[id title body created_at updated_at].each do |attr|
-          expect(question_response[attr]).to eq(question.send(attr).as_json)
-        end
+      it_behaves_like 'Public fields' do
+        let(:attributes) { %w[id title body created_at updated_at] }
+        let(:resource) { question }
+        let(:resource_response) { question_response }
       end
 
       it 'contains user object' do
@@ -57,10 +55,10 @@ RSpec.describe 'Questions API', type: :request do
           expect(question_response['answers'].size).to eq(answers.count)
         end
 
-        it 'returns all public fields' do
-          %w[id body created_at updated_at].each do |attr|
-            expect(answer_response[attr]).to eq(answer.send(attr).as_json)
-          end
+        it_behaves_like 'Public fields' do
+          let(:attributes) { %w[id body created_at updated_at] }
+          let(:resource) { answer }
+          let(:resource_response) { answer_response }
         end
       end
     end
@@ -88,18 +86,16 @@ RSpec.describe 'Questions API', type: :request do
         get api_path, params: { access_token: access_token.token, id: question.id }, headers: headers
       end
 
-      it 'returns 20x status' do
-        expect(response).to be_successful
-      end
+      it_behaves_like 'Successfull response'
 
       it 'returns requested question' do
         expect(json['question']['id']).to eq(question.id)
       end
 
-      it 'returns all public fields' do
-        %w[id title body created_at updated_at].each do |attr|
-          expect(json['question'][attr]).to eq(question.send(attr).as_json)
-        end
+      it_behaves_like 'Public fields' do
+        let(:attributes) { %w[id title body created_at updated_at] }
+        let(:resource) { question }
+        let(:resource_response) { json['question'] }
       end
 
       it 'contains user object' do
@@ -117,10 +113,10 @@ RSpec.describe 'Questions API', type: :request do
           expect(json['question']['answers'].count).to eq(answers.count)
         end
 
-        it 'returns all public fields' do
-          %w[id body created_at updated_at].each do |attr|
-            expect(json['question']['answers'].first[attr]).to eq(answer.send(attr).as_json)
-          end
+        it_behaves_like 'Public fields' do
+          let(:attributes) { %w[id body created_at updated_at] }
+          let(:resource) { answer }
+          let(:resource_response) { json['question']['answers'].first }
         end
       end
 
@@ -131,10 +127,10 @@ RSpec.describe 'Questions API', type: :request do
           expect(json['question']['comments'].count).to eq(comments.count)
         end
 
-        it 'returns all public fields' do
-          %w[id body created_at updated_at].each do |attr|
-            expect(json['question']['comments'].first[attr]).to eq(comment.send(attr).as_json)
-          end
+        it_behaves_like 'Public fields' do
+          let(:attributes) { %w[id body created_at updated_at] }
+          let(:resource) { comment }
+          let(:resource_response) { json['question']['comments'].first }
         end
       end
 
@@ -145,10 +141,10 @@ RSpec.describe 'Questions API', type: :request do
           expect(json['question']['links'].count).to eq(links.count)
         end
 
-        it 'returns all public fields' do
-          %w[name url].each do |attr|
-            expect(json['question']['links'].first[attr]).to eq(link.send(attr).as_json)
-          end
+        it_behaves_like 'Public fields' do
+          let(:attributes) { %w[name url] }
+          let(:resource) { link }
+          let(:resource_response) { json['question']['links'].first }
         end
       end
 
@@ -180,27 +176,24 @@ RSpec.describe 'Questions API', type: :request do
     context 'authorized' do
       let(:access_token) { create(:access_token) }
 
-      it 'returns 20x status' do
-        post api_path, params: { access_token: access_token.token, question: attributes_for(:question) }.to_json,
-                       headers: headers
-
-        expect(response).to be_successful
+      it_behaves_like 'Successfull response' do
+        before do
+          post api_path, params: { access_token: access_token.token, question: attributes_for(:question) }.to_json,
+                         headers: headers
+        end
       end
 
       context 'invalid attributes' do
+        before do
+          post api_path,
+               params: { access_token: access_token.token, question: attributes_for(:question, :invalid) }.to_json, headers: headers
+        end
+
         it 'does not save new question in db' do
-          expect do
-            post api_path,
-                 params: { access_token: access_token.token,
-                           question: attributes_for(:question, :invalid) }.to_json,
-                 headers: headers
-          end.to_not change(Question, :count)
+          expect(Question.count).to eq(0)
         end
 
         it 'returns 422 status' do
-          post api_path,
-               params: { access_token: access_token.token, question: attributes_for(:question, :invalid) }.to_json, headers: headers
-
           expect(response).to have_http_status(:unprocessable_entity)
         end
       end
@@ -208,29 +201,21 @@ RSpec.describe 'Questions API', type: :request do
       context 'valid attributes' do
         let(:attributes_for_question) { attributes_for(:question) }
 
+        before do
+          post api_path, params: { access_token: access_token.token, question: attributes_for_question }.to_json,
+                         headers: headers
+        end
+
         it 'saves new question in db' do
-          expect  do
-            post api_path,
-                 params: { access_token: access_token.token,
-                           question: attributes_for_question }.to_json,
-                 headers: headers
-          end.to change(Question, :count).by(1)
+          expect(Question.count).to eq(1)
         end
 
-        it 'returns 20x status' do
-          post api_path, params: { access_token: access_token.token, question: attributes_for_question }.to_json,
-                         headers: headers
+        it_behaves_like 'Successfull response'
 
-          expect(response).to be_successful
-        end
-
-        it 'returns saved question with all public fields' do
-          post api_path, params: { access_token: access_token.token, question: attributes_for_question }.to_json,
-                         headers: headers
-
-          %w[id title body created_at updated_at].each do |attr|
-            expect(json['question'][attr]).to eq(Question.first.send(attr).as_json)
-          end
+        it_behaves_like 'Public fields' do
+          let(:attributes) { %w[id title body created_at updated_at] }
+          let(:resource) { Question.first }
+          let(:resource_response) { json['question'] }
         end
       end
     end
@@ -254,56 +239,48 @@ RSpec.describe 'Questions API', type: :request do
     context 'authorized' do
       let(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
-      it 'returns 20x status' do
-        patch api_path, params: { access_token: access_token.token, question: { title: 'Updated title' } }.to_json,
-                        headers: headers
-
-        expect(response).to be_successful
+      it_behaves_like 'Successfull response' do
+        before do
+          patch api_path, params: { access_token: access_token.token, question: { title: 'Updated title' } }.to_json,
+                          headers: headers
+        end
       end
 
       context 'invalid attributes' do
-        it 'does not update question in db' do
+        before do
           patch api_path,
                 params: { access_token: access_token.token, question: attributes_for(:question, :invalid) }.to_json, headers: headers
-
+        end
+        it 'does not update question in db' do
           question.reload
 
           expect(question.title).to_not eq(nil)
         end
 
         it 'returns 422 status' do
-          patch api_path,
-                params: { access_token: access_token.token, question: attributes_for(:question, :invalid) }.to_json, headers: headers
-
           expect(response).to have_http_status(:unprocessable_entity)
         end
       end
 
       context 'valid attributes' do
         context 'author of question' do
-          it 'update question in db' do
+          before do
             patch api_path, params: { access_token: access_token.token, question: { title: 'Updated title' } }.to_json,
                             headers: headers
+          end
 
+          it 'update question in db' do
             question.reload
 
             expect(question.title).to eq('Updated title')
           end
 
-          it 'returns 20x status' do
-            patch api_path, params: { access_token: access_token.token, question: { title: 'Updated title' } }.to_json,
-                            headers: headers
+          it_behaves_like 'Successfull response'
 
-            expect(response).to be_successful
-          end
-
-          it 'returns updated question with all public fields' do
-            patch api_path, params: { access_token: access_token.token, question: { title: 'Updated title' } }.to_json,
-                            headers: headers
-
-            %w[id title body created_at updated_at].each do |attr|
-              expect(json['question'][attr]).to eq(Question.first.send(attr).as_json)
-            end
+          it_behaves_like 'Public fields' do
+            let(:attributes) { %w[id title body created_at updated_at] }
+            let(:resource) { Question.first }
+            let(:resource_response) { json['question'] }
           end
         end
 
@@ -344,17 +321,14 @@ RSpec.describe 'Questions API', type: :request do
       let(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
       context 'author of question' do
-        it 'returns 20x status' do
+        before do
           delete api_path, params: { access_token: access_token.token }.to_json, headers: headers
-
-          expect(response).to be_successful
         end
 
+        it_behaves_like 'Successfull response'
+
         it 'deletes question from db' do
-          expect do
-            delete api_path, params: { access_token: access_token.token, question_id: question }.to_json,
-                             headers: headers
-          end.to change(Question, :count).by(-1)
+          expect(Question.count).to eq(0)
         end
       end
 
