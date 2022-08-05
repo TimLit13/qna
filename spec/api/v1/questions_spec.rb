@@ -29,8 +29,9 @@ RSpec.describe 'Questions API', type: :request do
 
       it_behaves_like 'Successfull response'
 
-      it 'returns list of questions' do
-        expect(json['questions'].size).to eq(questions.count)
+      it_behaves_like 'Returns list of resources' do
+        let(:resources) { questions }
+        let(:resources_response) { json['questions'] }
       end
 
       it_behaves_like 'Public fields' do
@@ -51,8 +52,9 @@ RSpec.describe 'Questions API', type: :request do
         let(:answer) { answers.first }
         let(:answer_response) { question_response['answers'].first }
 
-        it 'returns list of answers' do
-          expect(question_response['answers'].size).to eq(answers.count)
+        it_behaves_like 'Returns list of resources' do
+          let(:resources) { answers }
+          let(:resources_response) { question_response['answers'] }
         end
 
         it_behaves_like 'Public fields' do
@@ -109,8 +111,10 @@ RSpec.describe 'Questions API', type: :request do
       describe 'answers' do
         let(:answer) { answers.first }
 
-        it 'returns list of answers' do
-          expect(json['question']['answers'].count).to eq(answers.count)
+        
+        it_behaves_like 'Returns list of resources' do
+          let(:resources) { answers }
+          let(:resources_response) { json['question']['answers'] }
         end
 
         it_behaves_like 'Public fields' do
@@ -137,8 +141,9 @@ RSpec.describe 'Questions API', type: :request do
       describe 'links' do
         let(:link) { links.first }
 
-        it 'returns list of links' do
-          expect(json['question']['links'].count).to eq(links.count)
+        it_behaves_like 'Returns list of resources' do
+          let(:resources) { links }
+          let(:resources_response) { json['question']['links'] }
         end
 
         it_behaves_like 'Public fields' do
@@ -151,8 +156,9 @@ RSpec.describe 'Questions API', type: :request do
       describe 'files' do
         let(:file) { question.files.first }
 
-        it 'returns list of files' do
-          expect(json['question']['files'].count).to eq(question.files.count)
+        it_behaves_like 'Returns list of resources' do
+          let(:resources) { question.files }
+          let(:resources_response) { json['question']['files'] }
         end
 
         it 'returns url of file' do

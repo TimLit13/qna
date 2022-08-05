@@ -29,8 +29,9 @@ RSpec.describe 'Answers API', type: :request do
 
       it_behaves_like 'Successfull response'
 
-      it 'returns list of answers' do
-        expect(json['answers'].size).to eq(answers.count)
+      it_behaves_like 'Returns list of resources' do
+        let(:resources) { answers }
+        let(:resources_response) { json['answers'] }
       end
 
       it_behaves_like 'Public fields' do
@@ -94,14 +95,15 @@ RSpec.describe 'Answers API', type: :request do
       describe 'comments' do
         let(:comment) { comments.first }
 
-        it 'returns list of answers' do
-          expect(json['answer']['comments'].count).to eq(comments.count)
+        it_behaves_like 'Returns list of resources' do
+          let(:resources) { comments }
+          let(:resources_response) { json['answer']['comments'] }
         end
 
-        it 'returns all public fields' do
-          %w[id body created_at updated_at].each do |attr|
-            expect(json['answer']['comments'].first[attr]).to eq(comment.send(attr).as_json)
-          end
+        it_behaves_like 'Public fields' do
+          let(:attributes) { %w[id body created_at updated_at] }
+          let(:resource) { comment }
+          let(:resource_response) { json['answer']['comments'].first }
         end
       end
 
@@ -122,8 +124,9 @@ RSpec.describe 'Answers API', type: :request do
       describe 'files' do
         let(:file) { answer.files.first }
 
-        it 'returns list of files' do
-          expect(json['answer']['files'].count).to eq(answer.files.count)
+        it_behaves_like 'Returns list of resources' do
+          let(:resources) { answer.files }
+          let(:resources_response) { json['answer']['files'] }
         end
 
         it 'returns url of file' do

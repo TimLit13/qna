@@ -36,16 +36,16 @@ RSpec.describe 'Profiles API', type: :request do
 
       it_behaves_like 'Successfull response'
 
-      it 'returns all public fields' do
-        %w[id email admin created_at updated_at].each do |attr|
-          expect(json['user'][attr]).to eq(user.send(attr).as_json)
-        end
+      
+      it_behaves_like 'Public fields' do
+        let(:attributes) { %w[id email admin created_at updated_at] }
+        let(:resource) { user }
+        let(:resource_response) { json['user'] }
       end
 
-      it 'does not return private fields' do
-        %w[password encrypted_password].each do |attr|
-          expect(json).to_not have_key(attr)
-        end
+      it_behaves_like 'Private fields' do
+        let(:attributes) { %w[password encrypted_password] }
+        let(:resource_response) { json }
       end
     end
   end
@@ -92,10 +92,9 @@ RSpec.describe 'Profiles API', type: :request do
         let(:resource_response) { json['users'].first }
       end
 
-      it 'does not return private fields' do
-        %w[password encrypted_password].each do |attr|
-          expect(json['users'].first).to_not have_key(attr)
-        end
+      it_behaves_like 'Private fields' do
+        let(:attributes) { %w[password encrypted_password] }
+        let(:resource_response) { json['users'].first }
       end
     end
   end

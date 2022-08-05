@@ -29,3 +29,17 @@ shared_examples_for 'Public fields' do
     end
   end
 end
+
+shared_examples_for 'Private fields' do
+  it 'does not return private fields' do
+    attributes.each do |attr|
+      expect(resource_response).to_not have_key(attr)
+    end
+  end
+end
+
+shared_examples_for 'Returns list of resources' do
+  it 'returns list of resources' do
+    expect(resources_response.size).to eq(resources.count)
+  end
+end
