@@ -45,8 +45,9 @@ RSpec.describe 'Questions API', type: :request do
         let(:resource_response){ question_response }
       end
 
-      it 'contains short title' do
-        expect(question_response['short_title']).to eq(question.title.truncate(7))
+      it_behaves_like 'Contains short attribute' do
+        let(:resource) { question.title }
+        let(:resource_response){ question_response['short_title'] }
       end
 
       describe 'answers' do
@@ -106,8 +107,9 @@ RSpec.describe 'Questions API', type: :request do
         let(:resource_response){ json['question'] }
       end
 
-      it 'contains short title' do
-        expect(json['question']['short_title']).to eq(question.title.truncate(7))
+      it_behaves_like 'Contains short attribute' do
+        let(:resource) { question.title }
+        let(:resource_response){ json['question']['short_title'] }
       end
 
       describe 'answers' do

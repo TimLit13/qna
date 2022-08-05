@@ -45,8 +45,9 @@ RSpec.describe 'Answers API', type: :request do
         let(:resource_response){ json['answers'].first }
       end
 
-      it 'contains short body' do
-        expect(json['answers'].first['short_body']).to eq(answers.first.body.truncate(7))
+      it_behaves_like 'Contains short attribute' do
+        let(:resource) { answers.first.body }
+        let(:resource_response){ json['answers'].first['short_body'] }
       end
     end
   end
@@ -90,8 +91,9 @@ RSpec.describe 'Answers API', type: :request do
         let(:resource_response){ json['answer'] }
       end
 
-      it 'contains short body' do
-        expect(json['answer']['short_body']).to eq(answer.body.truncate(7))
+      it_behaves_like 'Contains short attribute' do
+        let(:resource) { answer.body }
+        let(:resource_response){ json['answer']['short_body']}
       end
 
       describe 'comments' do

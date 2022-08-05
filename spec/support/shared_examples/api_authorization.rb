@@ -49,3 +49,9 @@ shared_examples_for 'Contains user object' do
     expect(resource_response['user']['id']).to eq(resource.user.id)
   end
 end
+
+shared_examples_for 'Contains short attribute' do
+  it 'contains short body' do
+    expect(resource_response).to eq(resource.truncate(7))
+  end
+end
