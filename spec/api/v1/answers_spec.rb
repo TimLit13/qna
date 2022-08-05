@@ -114,8 +114,9 @@ RSpec.describe 'Answers API', type: :request do
       describe 'links' do
         let(:link) { links.first }
 
-        it 'returns list of links' do
-          expect(json['answer']['links'].count).to eq(links.count)
+        it_behaves_like 'Returns list of resources' do
+          let(:resources) { links }
+          let(:resources_response) { json['answer']['links'] }
         end
 
         it_behaves_like 'Public fields' do
