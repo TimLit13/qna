@@ -42,12 +42,12 @@ RSpec.describe 'Answers API', type: :request do
 
       it_behaves_like 'Contains user object' do
         let(:resource) { answers.first }
-        let(:resource_response){ json['answers'].first }
+        let(:resource_response) { json['answers'].first }
       end
 
       it_behaves_like 'Contains short attribute' do
         let(:resource) { answers.first.body }
-        let(:resource_response){ json['answers'].first['short_body'] }
+        let(:resource_response) { json['answers'].first['short_body'] }
       end
     end
   end
@@ -88,12 +88,12 @@ RSpec.describe 'Answers API', type: :request do
 
       it_behaves_like 'Contains user object' do
         let(:resource) { answer }
-        let(:resource_response){ json['answer'] }
+        let(:resource_response) { json['answer'] }
       end
 
       it_behaves_like 'Contains short attribute' do
         let(:resource) { answer.body }
-        let(:resource_response){ json['answer']['short_body']}
+        let(:resource_response) { json['answer']['short_body'] }
       end
 
       describe 'comments' do
@@ -172,9 +172,7 @@ RSpec.describe 'Answers API', type: :request do
           expect(Answer.count).to eq(0)
         end
 
-        it 'returns 422 status' do
-          expect(response).to have_http_status(:unprocessable_entity)
-        end
+        it_behaves_like 'Unprocessable entity returns'
       end
 
       context 'valid attributes' do
@@ -237,9 +235,7 @@ RSpec.describe 'Answers API', type: :request do
           expect(answer.body).to_not eq(nil)
         end
 
-        it 'returns 422 status' do
-          expect(response).to have_http_status(:unprocessable_entity)
-        end
+        it_behaves_like 'Unprocessable entity returns'
       end
 
       context 'valid attributes' do

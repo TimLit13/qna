@@ -42,12 +42,12 @@ RSpec.describe 'Questions API', type: :request do
 
       it_behaves_like 'Contains user object' do
         let(:resource) { question }
-        let(:resource_response){ question_response }
+        let(:resource_response) { question_response }
       end
 
       it_behaves_like 'Contains short attribute' do
         let(:resource) { question.title }
-        let(:resource_response){ question_response['short_title'] }
+        let(:resource_response) { question_response['short_title'] }
       end
 
       describe 'answers' do
@@ -104,18 +104,17 @@ RSpec.describe 'Questions API', type: :request do
 
       it_behaves_like 'Contains user object' do
         let(:resource) { question }
-        let(:resource_response){ json['question'] }
+        let(:resource_response) { json['question'] }
       end
 
       it_behaves_like 'Contains short attribute' do
         let(:resource) { question.title }
-        let(:resource_response){ json['question']['short_title'] }
+        let(:resource_response) { json['question']['short_title'] }
       end
 
       describe 'answers' do
         let(:answer) { answers.first }
 
-        
         it_behaves_like 'Returns list of resources' do
           let(:resources) { answers }
           let(:resources_response) { json['question']['answers'] }
@@ -188,22 +187,22 @@ RSpec.describe 'Questions API', type: :request do
 
       it_behaves_like 'Successfull response' do
         before do
-          post api_path, params: { access_token: access_token.token, question: attributes_for(:question) }.to_json, headers: headers
+          post api_path, params: { access_token: access_token.token, question: attributes_for(:question) }.to_json,
+                         headers: headers
         end
       end
 
       context 'invalid attributes' do
         before do
-          post api_path, params: { access_token: access_token.token, question: attributes_for(:question, :invalid) }.to_json, headers: headers
+          post api_path,
+               params: { access_token: access_token.token, question: attributes_for(:question, :invalid) }.to_json, headers: headers
         end
 
         it 'does not save new question in db' do
           expect(Question.count).to eq(0)
         end
 
-        it 'returns 422 status' do
-          expect(response).to have_http_status(:unprocessable_entity)
-        end
+        it_behaves_like 'Unprocessable entity returns'
       end
 
       context 'valid attributes' do
@@ -265,9 +264,7 @@ RSpec.describe 'Questions API', type: :request do
           expect(question.title).to_not eq(nil)
         end
 
-        it 'returns 422 status' do
-          expect(response).to have_http_status(:unprocessable_entity)
-        end
+        it_behaves_like 'Unprocessable entity returns'
       end
 
       context 'valid attributes' do

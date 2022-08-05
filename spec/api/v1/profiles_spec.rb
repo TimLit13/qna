@@ -36,7 +36,6 @@ RSpec.describe 'Profiles API', type: :request do
 
       it_behaves_like 'Successfull response'
 
-      
       it_behaves_like 'Public fields' do
         let(:attributes) { %w[id email admin created_at updated_at] }
         let(:resource) { user }

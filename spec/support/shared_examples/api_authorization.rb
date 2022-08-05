@@ -55,3 +55,9 @@ shared_examples_for 'Contains short attribute' do
     expect(resource_response).to eq(resource.truncate(7))
   end
 end
+
+shared_examples_for 'Unprocessable entity returns' do
+  it 'returns 422 status' do
+    expect(response).to have_http_status(:unprocessable_entity)
+  end
+end
