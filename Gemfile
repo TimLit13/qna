@@ -30,6 +30,10 @@ gem 'skim', '~> 0.11'
 
 gem 'pundit'
 
+gem 'doorkeeper'
+gem 'active_model_serializers', '~> 0.10'
+gem 'oj'
+
 # gem 'image_processing', '~> 1.2'
 
 gem 'bootsnap', '>= 1.4.4', require: false

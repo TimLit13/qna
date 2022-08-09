@@ -1,9 +1,23 @@
 Rails.application.routes.draw do
+  use_doorkeeper
   devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
   root to: "questions#index"
 
   namespace :users do
     resource :oauth_email_confirmations, only: %i[new create]
+  end
+
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only: [] do
+        get :me, on: :collection
+        get :all, on: :collection
+      end
+
+      resources :questions, only: %i[index show create update destroy] do
+        resources :answers, only: %i[index show create update destroy]
+      end
+    end
   end
 
   concern :votable do
