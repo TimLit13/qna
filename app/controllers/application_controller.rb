@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   def user_not_authorized
     error_message = 'You are not authorized to perform this action.'
     respond_to do |format|
-      format.html do 
+      format.html do
         flash[:alert] = error_message
         redirect_to(request.referer || root_path)
       end
