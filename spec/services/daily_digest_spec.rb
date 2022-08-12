@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe DailyDigest do
   let(:users) { create_list(:user, 3) }
-  
+
   context 'questions created' do
     let!(:questions) { create_list(:question, 3, user_id: users.first.id) }
 
@@ -13,7 +13,7 @@ RSpec.describe DailyDigest do
     end
   end
 
-  context 'questions was not created' do 
+  context 'questions was not created' do
     it 'does not send daily digest to all users' do
       expect(DailyDigestMailer).to_not receive(:digest)
 

@@ -17,7 +17,7 @@ class Question < ApplicationRecord
 
   after_create :calculate_reputation
 
-  scope :created_or_updated_today, lambda { where(updated_at: Time.current.all_day) }
+  scope :created_or_updated_today, -> { where(updated_at: Time.current.all_day) }
 
   def mark_best_answer(answer)
     # self.update(best_answer_id: answer.id)

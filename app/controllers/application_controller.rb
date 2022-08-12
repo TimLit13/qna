@@ -13,6 +13,11 @@ class ApplicationController < ActionController::Base
         redirect_to(request.referer || root_path)
       end
 
+      format.js do
+        flash[:alert] = error_message
+        redirect_to(request.referer || root_path)
+      end
+
       format.json { render json: { error: error_message }, status: :forbidden }
     end
   end

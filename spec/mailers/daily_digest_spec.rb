@@ -5,7 +5,7 @@ RSpec.describe DailyDigestMailer, type: :mailer do
     let!(:user) { create(:user) }
     let!(:questions) { create_list(:question, 3, user_id: user.id) }
     let!(:mail) { DailyDigestMailer.digest(user, Question.created_or_updated_today) }
-    
+
     context 'headers' do
       it 'renders subject' do
         expect(mail.subject).to eq('Digest')
