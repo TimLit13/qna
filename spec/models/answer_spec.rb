@@ -39,7 +39,9 @@ RSpec.describe Answer, type: :model do
 
       answer = described_class.create!(user_id: user.id, question_id: question.id, body: 'NewAnswer')
 
-      expect { answer.send(:send_notification_with_new_answer) }.to have_enqueued_job(NewAnswerForQuestionJob).on_queue('default')
+      expect do
+        answer.send(:send_notification_with_new_answer)
+      end.to have_enqueued_job(NewAnswerForQuestionJob).on_queue('default')
     end
   end
 end

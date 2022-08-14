@@ -1,0 +1,5 @@
+  - if current_user&.subscribed_on?(resource)
+    / = link_to 'Subscribe', question_subscriptions_path(resource), method: :post, remote: true
+  - elsif current_user
+    = link_to 'Subscribe', question_subscriptions_path(resource), method: :post, remote: true
+    

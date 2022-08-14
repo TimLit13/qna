@@ -10,7 +10,8 @@ RSpec.describe NewAnswerNotification do
 
     it 'sends new answers notifications for question author' do
       answers.each do |answer|
-        expect(NewAnswerNotificationMailer).to receive(:send_question_with_new_answer).with(user, answer).and_call_original
+        expect(NewAnswerNotificationMailer).to receive(:send_question_with_new_answer).with(user,
+                                                                                            answer).and_call_original
 
         subject.send_question_with_new_answer(answer)
       end
