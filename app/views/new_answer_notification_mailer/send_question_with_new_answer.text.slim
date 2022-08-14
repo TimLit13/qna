@@ -1,0 +1,15 @@
+h3 New answer for question
+
+h5 Question:
+p Title:
+= @answer.question.title
+
+p Body:
+= @answer.question.body
+
+h5 New answer:
+= @answer.body
+
+h5 Answers:
+- @answer.question.answers[0..-2].each do |answer|
+  = answer.body 

@@ -30,4 +30,16 @@ RSpec.describe Answer, type: :model do
 
     it_behaves_like 'commentable'
   end
+
+  describe '#send_notification_with_new_answer' do
+    let(:user) { create(:user) }
+    let!(:question) { create(:question, user: user) }
+    it 'enqueue job after answer created' do
+      ActiveJob::Base.queue_adapter = :test
+
+      answer = described_class.create!(user_id: user.id, question_id: question.id, body: 'NewAnswer')
+
+      expect { answer.send(:send_notification_with_new_answer) }.to have_enqueued_job(NewAnswerForQuestionJob).on_queue('default')
+    end
+  end
 end
