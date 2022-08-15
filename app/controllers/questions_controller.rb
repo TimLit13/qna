@@ -5,6 +5,7 @@ class QuestionsController < ApplicationController
   before_action :load_question, only: %i[show edit update destroy]
 
   before_action :pass_question_to_client, only: :show
+  before_action :find_subscription, only: :show
 
   # before_action :authorize_question!
 
@@ -93,6 +94,10 @@ class QuestionsController < ApplicationController
   def pass_question_to_client
     gon.user_id = current_user&.id
     gon.question_id = @question.id
+  end
+
+  def find_subscription
+    @subscription = @question.subscriptions.find_by(user: current_user)
   end
 
   # def authorize_question!
