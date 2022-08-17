@@ -3,10 +3,10 @@ class SubscriptionPolicy < ApplicationPolicy
   end
 
   def create?
-    user&.admin? || user
+    user
   end
 
   def destroy?
-    user&.admin? || user&.author_of?(record)
+    user.admin? || user.author_of?(record)
   end
 end
