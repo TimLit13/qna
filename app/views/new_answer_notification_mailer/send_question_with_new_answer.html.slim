@@ -1,0 +1,18 @@
+h3 New answer for question
+
+h5 Question:
+
+p title
+= @answer.question.title
+
+p body
+= @answer.question.body
+
+h5 New answer:
+p= @answer.body
+
+h5 Answers:
+- @answer.question.answers[0..-2].each do |answer|
+  p= answer.body 
+
+

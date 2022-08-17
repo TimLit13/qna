@@ -5,6 +5,7 @@ RSpec.describe User, type: :model do
     it { should have_many(:questions).dependent(:destroy) }
     it { should have_many(:answers).dependent(:destroy) }
     it { should have_many(:authorizations).dependent(:destroy) }
+    it { should have_many(:subscriptions).dependent(:destroy) }
   end
 
   describe 'validations' do
@@ -37,6 +38,20 @@ RSpec.describe User, type: :model do
       expect(FindForOauth).to receive(:new).with(auth).and_return(service)
       expect(service).to receive(:call)
       User.find_for_oauth(auth)
+    end
+  end
+
+  describe '#subscribed_on?' do
+    let(:first_user) { create(:user) }
+    let(:question) { create(:question, user: first_user) }
+    let(:second_user) { create(:user) }
+
+    it 'user is an author of resource' do
+      expect(first_user.subscribed_on?(question)).to be_truthy
+    end
+
+    it 'user is not an author of resource' do
+      expect(second_user.subscribed_on?(question)).to be_falsy
     end
   end
 end

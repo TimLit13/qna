@@ -34,6 +34,11 @@ gem 'doorkeeper'
 gem 'active_model_serializers', '~> 0.10'
 gem 'oj'
 
+gem 'sidekiq'
+gem 'sinatra', require: false
+gem 'whenever', require: false
+
+
 # gem 'image_processing', '~> 1.2'
 
 gem 'bootsnap', '>= 1.4.4', require: false

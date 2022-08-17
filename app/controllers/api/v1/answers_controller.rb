@@ -3,6 +3,8 @@ class Api::V1::AnswersController < Api::V1::BaseController
   before_action :find_answer, only: %i[show update destroy]
   protect_from_forgery with: :null_session
 
+  respond_to :json
+
   def index
     authorize Answer
 

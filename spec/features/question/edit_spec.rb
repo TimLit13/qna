@@ -5,7 +5,7 @@ feature 'User can edit his question', '
   User would like to be able to edit his question
 ' do
   given(:user) { create(:user) }
-  given(:question_author) { create(:user) }
+  given!(:question_author) { create(:user) }
   given!(:question) { create(:question, user: question_author) }
   given(:another_question) { create(:question, user: user) }
   given(:link_google) { create(:link, :google, linkable: another_question) }

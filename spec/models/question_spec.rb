@@ -4,6 +4,7 @@ RSpec.describe Question, type: :model do
   describe 'associations' do
     it { should have_many(:answers).dependent(:destroy) }
     it { should have_many(:links).dependent(:destroy) }
+    it { should have_many(:subscriptions).dependent(:destroy) }
     it { should have_one(:award).dependent(:destroy) }
     it { should belong_to(:best_answer).class_name('Answer').optional }
     it { should belong_to(:user) }
@@ -31,5 +32,16 @@ RSpec.describe Question, type: :model do
     end
 
     it_behaves_like 'commentable'
+  end
+
+  describe 'reputation' do
+    let(:user) { create(:user) }
+    let(:question) { build(:question, user_id: user.id) }
+
+    it 'calls ReputationJob#perform_later' do
+      expect(ReputationJob).to receive(:perform_later).with(question)
+
+      question.save!
+    end
   end
 end

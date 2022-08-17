@@ -1,12 +1,12 @@
 -if current_page?(root_path) || current_page?(questions_path)
-  p= link_to question.title, question
+  h3= link_to question.title, question
   p= question.body
 -else
   h3= question.title
   p= question.body
-  
+
   = render 'shared/vote', resource: question
-  
+
   -if current_user&.author_of?(question)
     -if question.files.attached?
       - question.files.each do |file|
@@ -16,7 +16,7 @@
   - if question.links.any?
     .question-links
       p Links:
-      ul 
+      ul
         - question.links.each do |link|
           . class="link-#{link.id}"
             - if link.gist?
@@ -53,5 +53,8 @@
           = f.fields_for :links do |link|
           .links
             = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
-      
+
       = f.submit 'Save'
+
+  .subscription
+    = render 'subscriptions/subscription', resource: question
