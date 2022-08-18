@@ -1,2 +1,9 @@
-h1 Searches#index
-p Find me in app/views/searches/index.html.slim
+.search-header
+  h3= "Results for \"#{params[:query]}\" search"
+
+.search-results
+  - if @search_results
+    - @search_results.each do |obj|
+      p = obj.inspect
+  - else
+    p Nothing found

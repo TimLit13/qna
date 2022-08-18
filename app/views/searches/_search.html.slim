@@ -1,5 +1,5 @@
 .search
-  = form_with url: searches_path, local: true do |f|
+  = form_with url: searches_path, method: :get, local: true do |f|
     p.search-query-field
       = f.label :query
       = f.text_field :query
