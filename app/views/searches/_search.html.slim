@@ -1,0 +1,7 @@
+.search
+  = form_with url: searches_path, local: true do |f|
+    p.search-query-field
+      = f.label :query
+      = f.text_field :query
+
+    = f.submit 'Search'
