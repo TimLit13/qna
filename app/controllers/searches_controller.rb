@@ -1,12 +1,12 @@
 class SearchesController < ApplicationController
   def index
-    service = SearchService.new
-    @search_results = service.call(query_params)
+    service = SearchService.new(query_params)
+    @search_results = service.call
   end
 
   private
 
   def query_params
-    params.permit(:query)
+    params.permit(:query, :entity)
   end
 end

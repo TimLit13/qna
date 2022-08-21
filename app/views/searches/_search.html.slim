@@ -4,4 +4,7 @@
       = f.label :query
       = f.text_field :query
 
+    p.search-entity
+      = f.select :entity, SearchService::ENTITIES, selected: SearchService::ENTITIES.last
+
     = f.submit 'Search'
