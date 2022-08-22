@@ -1,6 +1,6 @@
 class SearchService
-  ENTITIES = %W[Question Answer Comment User #{'All website'}]
-  FULL_SEARCH = 'ThinkingSphinx'
+  ENTITIES = %W[Question Answer Comment User #{'All website'}].freeze
+  FULL_SEARCH = 'ThinkingSphinx'.freeze
 
   def initialize(query_from_page)
     @user_query_string = query_from_page[:query]
@@ -11,11 +11,9 @@ class SearchService
     return [] if @user_query_string&.empty?
 
     if ENTITIES[0..-2].include?(@user_entity_name)
-      perform_search(@user_entity_name,
-                     @user_query_string)
+      perform_search(@user_entity_name, @user_query_string)
     else
-      perform_search(FULL_SEARCH,
-                     @user_query_string)
+      perform_search(FULL_SEARCH, @user_query_string)
     end
   end
 
