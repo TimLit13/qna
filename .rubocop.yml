@@ -13,7 +13,7 @@ AllCops:
     - 'spec/spec_helper.rb'
     - 'spec/rails_helper.rb'
     - 'node_modules/**/*'
-    - 'db/migrate/20220605143259_create_active_storage_tables.active_storage.rb'
+    - 'db/migrate/**/*'
   TargetRubyVersion: 2.7
 
 Style/FrozenStringLiteralComment:
@@ -33,3 +33,25 @@ Layout/EndOfLine:
 
 Style/RedundantSelf:
   Enabled: False
+
+Layout/LineLength:
+  Max: 120
+  Exclude:
+    - 'spec/**/*'
+
+Style/ClassAndModuleChildren:
+  Exclude:
+    - 'app/controllers/api/**/*'
+    - 'app/controllers/users/oauth_email_confirmations_controller.rb'
+
+Metrics/AbcSize:
+  Exclude:
+    - 'app/controllers/application_controller.rb'
+    - 'app/controllers/oauth_callbacks_controller.rb'
+
+Metrics/MethodLength:
+  Exclude:
+    - 'app/controllers/application_controller.rb'
+    - 'app/controllers/oauth_callbacks_controller.rb'
+    - 'app/controllers/users/oauth_email_confirmations_controller.rb'
+    - 'app/services/find_for_oauth.rb'

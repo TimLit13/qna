@@ -38,6 +38,8 @@ gem 'sidekiq'
 gem 'sinatra', require: false
 gem 'whenever', require: false
 
+gem 'mysql2'
+gem 'thinking-sphinx'
 
 # gem 'image_processing', '~> 1.2'
 
@@ -70,6 +72,7 @@ group :test do
   gem 'shoulda-matchers', '~> 5.0'
   gem 'rails-controller-testing'
   gem 'launchy'
+  gem 'database_cleaner-active_record'
 end
 
 # gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

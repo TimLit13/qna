@@ -1,0 +1,10 @@
+.search
+  = form_with url: searches_path, method: :get, local: true do |f|
+    p.search-query-field
+      = f.label :query
+      = f.text_field :query
+
+    p.search-entity
+      = f.select :entity, SearchService::ENTITIES, selected: SearchService::ENTITIES.last
+
+    = f.submit 'Search'

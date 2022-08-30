@@ -1,0 +1,17 @@
+.search-header
+  h3= "Results for \"#{params[:query]}\" search"
+
+.search-results
+  - if @search_results.any?
+    table
+      tr
+        th #
+        th Type
+        th Search result
+
+      - @search_results.each_with_index do |obj, index|
+        tr
+          = render partial: "searches/#{obj.class.to_s.downcase}", locals: { resource: obj, index: index + 1 }
+
+  - else
+    p Nothing found

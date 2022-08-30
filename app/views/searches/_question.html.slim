@@ -1,0 +1,7 @@
+td= index
+td= resource.class.to_s
+td
+  h4= link_to resource.title, question_path(resource)
+  p= resource.body
+  p
+    i= "Created " + resource.updated_at.strftime("%d-%m-%Y") + " by " + resource.user.email
