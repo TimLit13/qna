@@ -41,6 +41,8 @@ gem 'whenever', require: false
 gem 'mysql2'
 gem 'thinking-sphinx'
 
+gem 'mini_racer'
+
 # gem 'image_processing', '~> 1.2'
 
 gem 'bootsnap', '>= 1.4.4', require: false
@@ -63,6 +65,13 @@ group :development do
   gem 'rubocop-rails', '~> 2.14', require: false
   gem 'rubocop-rspec', '~> 2.10', require: false
   gem 'rubocop-performance', '~> 1.13', require: false
+
+  # deploy
+  gem 'capistrano', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-rvm', require: false
+  gem 'capistrano-passenger', require: false
 end
 
 group :test do
