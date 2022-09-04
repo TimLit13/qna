@@ -14,6 +14,7 @@
 # end
 #
 set :runner_command, "rails runner"
+job_type :runner, "cd /usr/share/rvm/rubies/ruby-2.7.2/bin/bundle && bundle exec rails runner -e :environment ':task' :output"
 
 every 1.day, at: '12:00 pm' do
   runner "DailyDigestJob.perform_now"
