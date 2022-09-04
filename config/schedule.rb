@@ -13,8 +13,9 @@
 #   rake "some:great:rake:task"
 # end
 #
+set :runner_command, "rails runner"
+
 every 1.day, at: '12:00 pm' do
-  set :runner_command, "rails runner"
   runner "DailyDigestJob.perform_now"
 end
 
