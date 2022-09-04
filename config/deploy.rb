@@ -11,7 +11,7 @@ set :repo_url, "git@github.com:TimLit13/qna.git"
 set :deploy_to, "/home/deployer/qna"
 set :deploy_user, 'deployer'
 set :branch, "Part_17_deploy_with_capistrano"
-set :passenger_restart_with_sudo, true
+# set :passenger_restart_with_sudo, true
 
 set :pty, false
 
