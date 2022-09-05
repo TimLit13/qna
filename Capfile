@@ -9,6 +9,7 @@ require "capistrano/rails"
 require "capistrano/passenger"
 require "capistrano/rails/assets"
 require "capistrano/sidekiq"
+require "capistrano3/unicorn"
 install_plugin Capistrano::Sidekiq
 install_plugin Capistrano::Sidekiq::Systemd
 
