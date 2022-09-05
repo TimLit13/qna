@@ -63,13 +63,15 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "qna_production"
 
   config.action_mailer.perform_caching = false
-  config.action_mailer.default_url_options = { host: 'http://194.169.163.87' }
+  config.action_mailer.default_url_options = { host: '194.169.163.87' }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     address: 'smtp.gmail.com',
     port: 587,
-    user_name: ENV['SMTP_USERNAME'],
-    password: ENV['SMTP_PASSWORD'],
+    # user_name: ENV['SMTP_USERNAME'],
+    # password: ENV['SMTP_PASSWORD'],
+    user_name: Rails.application.credentials[Rails.env.to_sym][:gmail_smtp][:user_name],
+    password: Rails.application.credentials[Rails.env.to_sym][:gmail_smtp][:password],
     authentication: 'plain',
     enable_starttls_auto: true
   }
