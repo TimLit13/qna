@@ -12,6 +12,7 @@ require "capistrano/sidekiq"
 require "capistrano3/unicorn"
 install_plugin Capistrano::Sidekiq
 install_plugin Capistrano::Sidekiq::Systemd
+install_plugin Capistrano::Sidekiq::Monit
 
 require "thinking_sphinx/capistrano"
 require "whenever/capistrano"
