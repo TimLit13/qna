@@ -111,6 +111,8 @@ GEM
       capistrano (>= 3.9.0)
       capistrano-bundler
       sidekiq (>= 6.0)
+    capistrano3-unicorn (0.2.1)
+      capistrano (~> 3.1, >= 3.1.0)
     capybara (3.37.1)
       addressable
       matrix
@@ -188,6 +190,7 @@ GEM
     json (2.6.2)
     jsonapi-renderer (0.2.2)
     jwt (2.4.1)
+    kgio (2.11.4)
     launchy (2.5.0)
       addressable (~> 2.7)
     letter_opener (1.8.1)
@@ -297,6 +300,7 @@ GEM
       rake (>= 12.2)
       thor (~> 1.0)
     rainbow (3.1.1)
+    raindrops (0.20.0)
     rake (13.0.6)
     rash_alt (0.4.12)
       hashie (>= 3.4)
@@ -418,6 +422,9 @@ GEM
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.2.0)
+    unicorn (6.1.0)
+      kgio (~> 2.6)
+      raindrops (~> 0.7)
     validate_url (1.0.15)
       activemodel (>= 3.0.0)
       public_suffix
@@ -457,6 +464,7 @@ DEPENDENCIES
   capistrano-rails
   capistrano-rvm
   capistrano-sidekiq
+  capistrano3-unicorn
   capybara (>= 3.26)
   capybara-email
   cocoon (~> 1.2, >= 1.2.9)
@@ -500,6 +508,7 @@ DEPENDENCIES
   spring
   thinking-sphinx
   turbolinks (~> 5)
+  unicorn
   validate_url (~> 1.0, >= 1.0.2)
   web-console (>= 4.1.0)
   webdrivers
