@@ -1,57 +1,58 @@
-. class="answer-id-#{answer.id}"
-  . class="answer-errors-#{answer.id}"
-    = render 'shared/errors', resource: answer
+- cache answer do
+  . class="answer-id-#{answer.id}"
+    . class="answer-errors-#{answer.id}"
+      = render 'shared/errors', resource: answer
 
-  p= answer.body
-  
-  = render 'shared/vote', resource: answer
+    p= answer.body
 
-  - if current_user&.author_of?(answer)
-    - if answer.files.attached?
-      - answer.files.each do |file|
-        . class="attachment-#{file.id}"
-          p= link_to file.filename.to_s, url_for(file)
-          = link_to 'Del', attachment_path(file), method: :delete, data: { confirm: 'Are you sure?' }, local: false, remote: true
-  - if answer.links.any?
-    .answer-links
-      p Links:
-      ul 
-        - answer.links.each do |link|
-          . class="link-#{link.id}"
-            - if link.gist?
-              / .gist
-              /   .script
-              /     script src="#{link.url}.js"
-              = link_to link.name, link.url, class: 'gist', data: { 'gist-id' => link.gist_id }
-            - else
-              li= link_to link.name, link.url
-            - if current_user&.author_of?(link.linkable)
-              = link_to 'Delete link', link_path(link), method: :delete, data: { confirm: 'Are you sure?' }, local: false, remote: true
+    = render 'shared/vote', resource: answer
 
-  - if current_user&.author_of?(answer.question) && answer.question.best_answer_id != answer.id
-    = link_to 'Mark as best answer', mark_answer_as_best_answer_path(answer), method: :patch, remote: true, class: 'mark-answer-as-best-link'
-    p
+    - if current_user&.author_of?(answer)
+      - if answer.files.attached?
+        - answer.files.each do |file|
+          . class="attachment-#{file.id}"
+            p= link_to file.filename.to_s, url_for(file)
+            = link_to 'Del', attachment_path(file), method: :delete, data: { confirm: 'Are you sure?' }, local: false, remote: true
+    - if answer.links.any?
+      .answer-links
+        p Links:
+        ul
+          - answer.links.each do |link|
+            . class="link-#{link.id}"
+              - if link.gist?
+                / .gist
+                /   .script
+                /     script src="#{link.url}.js"
+                = link_to link.name, link.url, class: 'gist', data: { 'gist-id' => link.gist_id }
+              - else
+                li= link_to link.name, link.url
+              - if current_user&.author_of?(link.linkable)
+                = link_to 'Delete link', link_path(link), method: :delete, data: { confirm: 'Are you sure?' }, local: false, remote: true
 
-  -if current_user&.author_of?(answer)
-    =link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
-    = ' | '
-    =link_to 'Delete answer', answer_path(answer), remote: true, method: :delete, data: { confirm: 'Are you sure' }
-
-    = form_with model: answer, class: 'hidden', id: "edit-answer-#{answer.id}", local: false do |f|
+    - if current_user&.author_of?(answer.question) && answer.question.best_answer_id != answer.id
+      = link_to 'Mark as best answer', mark_answer_as_best_answer_path(answer), method: :patch, remote: true, class: 'mark-answer-as-best-link'
       p
-        = f.label :body
-        = f.text_area :body
-      p
-        = f.label :files
-        = f.file_field :files, multiple: true, direct_upload: true
-      p Links:
-      .new-answer-links
-        #links
-          = f.fields_for :links do |link|
-          .links
-            = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
-      p
-        = f.submit 'Save'
+
+    -if current_user&.author_of?(answer)
+      =link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+      = ' | '
+      =link_to 'Delete answer', answer_path(answer), remote: true, method: :delete, data: { confirm: 'Are you sure' }
+
+      = form_with model: answer, class: 'hidden', id: "edit-answer-#{answer.id}", local: false do |f|
+        p
+          = f.label :body
+          = f.text_area :body
+        p
+          = f.label :files
+          = f.file_field :files, multiple: true, direct_upload: true
+        p Links:
+        .new-answer-links
+          #links
+            = f.fields_for :links do |link|
+            .links
+              = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
+        p
+          = f.submit 'Save'
   br
   hr
   . class="answer-id-#{answer.id}-comments comments"
@@ -61,4 +62,3 @@
   p New Comment:
   = render 'comments/new', resource: answer
   hr
-  
