@@ -1,25 +1,26 @@
-.question
-  = render @question
+- cache @question do
+  .question
+    = render @question
 
-  br
-  hr
-  . class="question-id-#{@question.id}-comments comments"
-    h4 Comments:
-    - if @question.comments.any?
-      = render @question.comments
-  p New Comment:  
-  = render 'comments/new', resource: @question
+    br
+    hr
+    . class="question-id-#{@question.id}-comments comments"
+      h4 Comments:
+      - if @question.comments.any?
+        = render @question.comments
+    p New Comment:
+    = render 'comments/new', resource: @question
 
-.answers
-  - if @question.answers.any?
-    h3 Answers
-    .best-answer
-      - if @best_answer
-        = render @best_answer
-    .other-answers
-      - if @other_answers
-        = render @other_answers
-  - else
-    p= 'No answers yet'
+  .answers
+    - if @question.answers.any?
+      h3 Answers
+      .best-answer
+        - if @best_answer
+          = render @best_answer
+      .other-answers
+        - if @other_answers
+          = render @other_answers
+    - else
+      p= 'No answers yet'
 
 =render 'answers/new', resource: @question

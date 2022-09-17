@@ -27,12 +27,13 @@ module Qna
     # config.autoload_paths.push("#{Rails.root}/app/services")
 
     config.generators do |g|
-      g.test_framework :rspec, 
+      g.test_framework :rspec,
                         view_specs: false,
                         helper_specs: false,
                         routing_specs: false,
                         request_specs: false,
                         controller_specs: true
     end
+    config.cache_store = :redis_store, 'redis://localhost:6379/0/cache', { expires_in: 60.minutes}
   end
 end

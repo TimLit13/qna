@@ -1,9 +1,11 @@
 - if current_user
-  p= link_to 'Log out', destroy_user_session_path, method: :delete 
+  p= link_to 'Log out', destroy_user_session_path, method: :delete
 
-h3 List of questions
+- cache cache_collection_key_for: @questions do
+  h3 List of questions
 
-. class='questions-list'
-  = render partial: 'question', collection: @questions
+  . class='questions-list'
+    = render partial: 'question', collection: @questions
 
-p= link_to 'Ask question', new_question_path
+  p= link_to 'Ask question', new_question_path
+
