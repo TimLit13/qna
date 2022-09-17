@@ -12,10 +12,12 @@ This app works on
 Used gems:
 ```
 ActionCable
-Slim
-Pundit
-Sidekiq
-Thinking-sphinx
+ActiveStorage
+ActiveJob
+slim
+pundit
+sidekiq
+thinking-sphinx
 unicorn
 omniauth (github, vkontakte, yandex)
 devise
